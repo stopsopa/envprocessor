@@ -42,8 +42,8 @@ function findWidestKeyLen(obj) {
   }, 0);
 }
 
-function presentExtractedVariables(obj) {
-  const max = findWidestKeyLen(obj);
+function presentExtractedVariables(obj, indent = 2) {
+  const max = findWidestKeyLen(obj) + 1;
 
   // log("Web exposed environment variables:");
 
@@ -58,20 +58,22 @@ function presentExtractedVariables(obj) {
       k += " ".repeat(max - l);
     }
 
-    buffer.push(`    ${k}: '${obj[key]}'`);
+    buffer.push(`${k}: '${obj[key]}'`);
   });
 
-  return buffer.join("\n");
+  const s = " ".repeat(indent);
+
+  return s + buffer.join("\n" + s);
 }
 
-function returnProcessed(obj) {
+function produceFileContent(obj) {
   return `window.process = {
   env: ${serializeInPrettierCompatibleWay(obj)}
 };
 `;
 }
 /**
- * Dumps given object to the file after processing with returnProcessed()
+ * Dumps given object to the file after processing with produceFileContent()
  * @param {string} file
  * @param {object} obj
  */
@@ -84,7 +86,7 @@ function saveToFile(file, obj) {
     mkdirp.sync(dir);
   }
 
-  fs.writeFileSync(file, returnProcessed(obj));
+  fs.writeFileSync(file, produceFileContent(obj));
 
   if (!fs.existsSync(file)) {
     throw th(`File '${file}' creation failed`);
@@ -135,7 +137,7 @@ module.exports = {
   produceRegex,
   presentExtractedVariables,
   pickEnvironmentVariables,
-  returnProcessed,
+  produceFileContent,
   saveToFile,
   findWidestKeyLen,
   log,

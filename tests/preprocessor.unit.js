@@ -2,7 +2,7 @@ const {
   saveToFile,
   presentExtractedVariables,
   serializeInPrettierCompatibleWay,
-  returnProcessed,
+  produceFileContent,
   findWidestKeyLen,
   produceRegex,
   pickEnvironmentVariables,
@@ -81,7 +81,26 @@ describe("preprocessor", () => {
     expect(result).toEqual(4);
   });
 
-  it("presentExtractedVariables", async () => {
+  it("presentExtractedVariables 0", async () => {
+    const obj = {
+      a: "b",
+      ab: "c",
+      abcd: "e",
+      abc: "d",
+    };
+
+    const result = presentExtractedVariables(obj, 0);
+
+    expect(result).toEqual(
+      `a    : 'b'
+ab   : 'c'
+abcd : 'e'
+abc  : 'd'`,
+    );
+  });
+
+
+  it("presentExtractedVariables default", async () => {
     const obj = {
       a: "b",
       ab: "c",
@@ -92,10 +111,10 @@ describe("preprocessor", () => {
     const result = presentExtractedVariables(obj);
 
     expect(result).toEqual(
-      `    a   : 'b'
-    ab  : 'c'
-    abcd: 'e'
-    abc : 'd'`,
+      `  a    : 'b'
+  ab   : 'c'
+  abcd : 'e'
+  abc  : 'd'`,
     );
   });
 
@@ -107,7 +126,7 @@ describe("preprocessor", () => {
     expect(result).toEqual(`{}`);
   });
 
-  it("returnProcessed", async () => {
+  it("produceFileContent", async () => {
     const obj = {
       a: "b",
       ab: "c",
@@ -115,7 +134,7 @@ describe("preprocessor", () => {
       abc: "d",
     };
 
-    const result = returnProcessed(obj);
+    const result = produceFileContent(obj);
 
     expect(result).toEqual(
       `window.process = {
@@ -156,7 +175,7 @@ describe("preprocessor", () => {
       // Arrange
       const testFile = "/test/file.js";
       const testObj = { TEST_VAR: "test_value" };
-      const expectedContent = returnProcessed(testObj);
+      const expectedContent = produceFileContent(testObj);
 
       // Act
       saveToFile(testFile, testObj);
