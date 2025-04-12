@@ -1,0 +1,23 @@
+{
+  "name": "envprocessor",
+  "version": "0.0.1",
+  "author": "Szymon Działowski",
+  "description": "",
+  "main": "src",
+  "scripts": {
+    "test": "/bin/bash test.sh",
+    "style:check": "yarn prettier --config prettier.config.cjs --check .",
+    "style:fix": "yarn prettier --config prettier.config.cjs --write .",
+    "style:list": "yarn prettier --config prettier.config.cjs --list-different ."
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/stopsopa/envprocessor",
+  "dependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@jest/types": "^29.6.3",
+    "jest": "^29.7.0",
+    "mkdirp": "^3.0.1",
+    "prettier": "^3.5.3"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "envprocessor",
+  "version": "0.0.1",
+  "author": "Szymon Działowski",
+  "description": "",
+  "license": "MIT",
+  "main": "src/index.js",
+  "homepage": "https://github.com/stopsopa/envprocessor",
+  "dependencies": {
+  },
+  "exports": {
+    "./*.js": {
+      "types": "./src/*.d.ts",
+      "default": "./src/*.js"
+    },
+    "./*": {
+      "types": "./src/*.d.ts",
+      "default": "./src/*.js"
+    }
+  }
+}

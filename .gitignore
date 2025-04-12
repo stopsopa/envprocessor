@@ -1,0 +1,12 @@
+/.idea/
+node_modules
+*.tgz
+yarn-error*
+/local.txt
+/trash/
+/coverage/
+*.jasmine-esbuild.js
+/playwright-report/
+.DS_Store
+*.tgz
+yarn.lock
