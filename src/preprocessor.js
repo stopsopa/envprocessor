@@ -70,11 +70,16 @@ function presentExtractedVariables(obj, indent = 2) {
   return s + buffer.join("\n" + s);
 }
 
-function produceFileContent(obj) {
-  return `window.process = {
-  env: ${serializeInPrettierCompatibleWay(obj)}
+function produceFileContent(
+  obj,
+  template = function (obj) {
+    return `window.process = {
+  env: ${serializeInPrettierCompatibleWay(obj, 2, 2)}
 };
 `;
+  },
+) {
+  return template(obj);
 }
 /**
  * Dumps given object to the file after processing with produceFileContent()
