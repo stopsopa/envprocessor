@@ -71,6 +71,9 @@ function findWidestKeyLen(obj) {
 function presentExtractedVariables(obj, indent = 2) {
   const max = findWidestKeyLen(obj) + 1;
 
+  /**
+   * @type {string[]}
+   */
   let buffer = [];
 
   Object.keys(obj).map((key) => {
@@ -134,6 +137,9 @@ function saveToFile(file, content) {
  * @returns {RegExp}
  */
 function produceRegex(mask) {
+  /**
+   * @type {RegExp}
+   */
   let reg;
 
   if (typeof mask === "string") {
@@ -158,13 +164,21 @@ function produceRegex(mask) {
 function pickEnvironmentVariables(mask, obj) {
   const reg = produceRegex(mask);
 
-  return Object.keys(obj).reduce((acc, key) => {
-    if (reg.test(key)) {
-      acc[key] = obj[key];
-    }
+  return Object.keys(obj).reduce(
+    /**
+     * @param {Record<string, string>} acc - Accumulator object
+     * @param {string} key - Current key being processed
+     * @returns {Record<string, string>}
+     */
+    (acc, key) => {
+      if (reg.test(key)) {
+        acc[key] = obj[key];
+      }
 
-    return acc;
-  }, {});
+      return acc;
+    },
+    {},
+  );
 }
 
 const packageJson = require("../package.json");

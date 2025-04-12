@@ -1,20 +1,24 @@
 const isNode = require("detect-node");
 
-const th = msg => new Error(`env.js: ${msg}`);
+/**
+ * @param {string} msg
+ * @returns {Error}
+ */
+const th = (msg) => new Error(`env.js: ${msg}`);
 
 /**
  * @typedef {Object.<string, string>} Env
  */
 
 /**
- * @type {Env}
+ * @type {Record<string, string>}
  */
 let env;
 
 if (isNode) {
-  env = process?.env;
+  env = /** @type {Record<string, string>} */ (process?.env || {});
 } else if (typeof window !== "undefined") {
-  env = window?.process?.env;
+  env = /** @type {Record<string, string>} */ (window?.process?.env || {});
 } else {
   throw th("env.js: neither node.js nor browser context detected");
 }

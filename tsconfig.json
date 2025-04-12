@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "target": "es6",
+    "resolveJsonModule": true // Add this line
+  },
+  "include": ["src/**/*.js"],
+  "exclude": ["src/preprocessorMiddleware.js"] // Add this line
+}
