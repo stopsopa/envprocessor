@@ -4,6 +4,7 @@ const {
   serializeInPrettierCompatibleWay,
   returnProcessed,
   findWidestKeyLen,
+  produceRegex,
 } = require("../src/preprocessor.js");
 
 const path = require("path");
@@ -19,26 +20,51 @@ jest.mock("mkdirp", () => ({
 }));
 
 describe("preprocessor", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+  describe("produceRegex", () => {
+    it("should convert string to RegExp", () => {
+      // Arrange
+      const mask = "^TEST_";
 
-    // Mock implementation for path.dirname
-    path.dirname.mockImplementation((file) => {
-      return "/mock/directory";
+      // Act
+      const result = produceRegex(mask);
+
+      // Assert
+      expect(result).toBeInstanceOf(RegExp);
+      expect(result.test("TEST_VAR")).toBe(true);
+      expect(result.test("NOT_TEST")).toBe(false);
     });
 
-    // Default mock for fs.existsSync to return true
-    fs.existsSync.mockReturnValue(true);
+    it("should throw error if mask contains $ character", () => {
+      // Arrange
+      const mask = "^TEST$";
 
-    // Mock for fs.writeFileSync
-    fs.writeFileSync.mockImplementation(() => {});
+      // Act & Assert
+      expect(() => produceRegex(mask)).toThrow(
+        "preprocessor.js error: mask should not containe '$' character, replace it with <dollar> tag instead",
+      );
+    });
 
-    // Spy on console.log for the log function
-    // jest.spyOn(console, "log").mockImplementation(() => {});
-  });
+    it("should replace <dollar> with $ in string mask", () => {
+      // Arrange
+      const mask = /test/;
 
-  afterEach(() => {
-    jest.restoreAllMocks();
+      // Act
+      const result = produceRegex(mask);
+
+      // Assert
+      expect(result).toBeInstanceOf(RegExp);
+      expect(String(result)).toBe("/test/");
+    });
+
+    it("should replace <dollar> with $ in string mask", () => {
+      // Arrange
+      const mask = "/abc/def/i";
+
+      // Act & Assert
+      expect(() => produceRegex(mask)).toThrow(
+        "stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' splits to more than 2 segments",
+      );
+    });
   });
 
   it("findWidestKeyLen", async () => {
@@ -102,60 +128,81 @@ describe("preprocessor", () => {
 `,
     );
   });
+  describe("saveToFile", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
 
-  it("should save processed object to file", () => {
-    // Arrange
-    const testFile = "/test/file.js";
-    const testObj = { TEST_VAR: "test_value" };
-    const expectedContent = returnProcessed(testObj);
+      // Mock implementation for path.dirname
+      path.dirname.mockImplementation((file) => {
+        return "/mock/directory";
+      });
 
-    // Act
-    saveToFile(testFile, testObj);
+      // Default mock for fs.existsSync to return true
+      fs.existsSync.mockReturnValue(true);
 
-    // Assert
-    expect(path.dirname).toHaveBeenCalledWith(testFile);
-    expect(fs.writeFileSync).toHaveBeenCalledWith(testFile, expectedContent);
-    // expect(console.log).toHaveBeenCalledWith("preprocessor.js log: ", `Saving ${testFile}`);
-  });
+      // Mock for fs.writeFileSync
+      fs.writeFileSync.mockImplementation(() => {});
 
-  it("should create directory if it does not exist", () => {
-    // Arrange
-    const mkdirp = require("mkdirp");
-    const testFile = "/test/new/directory/file.js";
-    const testObj = { TEST_VAR: "test_value" };
-
-    // Mock fs.existsSync to return false for directory check and true for file check
-    fs.existsSync.mockImplementation((path) => {
-      if (path === "/mock/directory") {
-        return false;
-      }
-      return true;
+      // Spy on console.log for the log function
+      // jest.spyOn(console, "log").mockImplementation(() => {});
     });
 
-    // Act
-    saveToFile(testFile, testObj);
-
-    // Assert
-    expect(mkdirp.mkdirp.sync).toHaveBeenCalledWith("/mock/directory");
-    expect(fs.writeFileSync).toHaveBeenCalled();
-  });
-
-  it("should throw error if file creation fails", () => {
-    // Arrange
-    const testFile = "/test/fail/file.js";
-    const testObj = { TEST_VAR: "test_value" };
-
-    // Mock fs.existsSync to return true for directory check and false for file check
-    fs.existsSync.mockImplementation((path) => {
-      if (path === testFile) {
-        return false;
-      }
-      return true;
+    afterEach(() => {
+      jest.restoreAllMocks();
     });
 
-    // Act & Assert
-    expect(() => saveToFile(testFile, testObj)).toThrow(
-      `preprocessor.js error: File '${testFile}' creation failed`,
-    );
+    it("should save processed object to file", () => {
+      // Arrange
+      const testFile = "/test/file.js";
+      const testObj = { TEST_VAR: "test_value" };
+      const expectedContent = returnProcessed(testObj);
+
+      // Act
+      saveToFile(testFile, testObj);
+
+      // Assert
+      expect(path.dirname).toHaveBeenCalledWith(testFile);
+      expect(fs.writeFileSync).toHaveBeenCalledWith(testFile, expectedContent);
+      // expect(console.log).toHaveBeenCalledWith("preprocessor.js log: ", `Saving ${testFile}`);
+    });
+
+    it("should create directory if it does not exist", () => {
+      // Arrange
+      const mkdirp = require("mkdirp");
+      const testFile = "/test/new/directory/file.js";
+      const testObj = { TEST_VAR: "test_value" };
+
+      // Mock fs.existsSync to return false for directory check and true for file check
+      fs.existsSync.mockImplementation((path) => {
+        if (path === "/mock/directory") {
+          return false;
+        }
+        return true;
+      });
+
+      // Act
+      saveToFile(testFile, testObj);
+
+      // Assert
+      expect(mkdirp.mkdirp.sync).toHaveBeenCalledWith("/mock/directory");
+      expect(fs.writeFileSync).toHaveBeenCalled();
+    });
+
+    it("should throw error if file creation fails", () => {
+      // Arrange
+      const testFile = "/test/fail/file.js";
+      const testObj = { TEST_VAR: "test_value" };
+
+      // Mock fs.existsSync to return true for directory check and false for file check
+      fs.existsSync.mockImplementation((path) => {
+        if (path === testFile) {
+          return false;
+        }
+        return true;
+      });
+
+      // Act & Assert
+      expect(() => saveToFile(testFile, testObj)).toThrow(`preprocessor.js error: File '${testFile}' creation failed`);
+    });
   });
 });

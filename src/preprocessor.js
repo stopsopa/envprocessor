@@ -2,6 +2,8 @@ const path = require("path");
 
 const fs = require("fs");
 
+const stringToRegex = require("./stringToRegex.js");
+
 const { mkdirp } = require("mkdirp");
 
 function log(...args) {
@@ -68,7 +70,11 @@ function returnProcessed(obj) {
 };
 `;
 }
-
+/**
+ * Dumps given object to the file after processing with returnProcessed()
+ * @param {string} file
+ * @param {object} obj
+ */
 function saveToFile(file, obj) {
   // log(`Saving ${file}`);
 
@@ -85,9 +91,50 @@ function saveToFile(file, obj) {
   }
 }
 
+/**
+ * Doing what it cane to convert mask to RegExp, if it is already a RegExp, it will be returned as is.
+ * @param {string|RegExp} mask
+ * @returns RegExp
+ */
+function produceRegex(mask) {
+  let reg;
+
+  if (typeof mask === "string") {
+    if (mask.includes("$")) {
+      throw th(`mask should not containe '$' character, replace it with <dollar> tag instead`);
+    }
+
+    reg = stringToRegex(mask.replace(/<dollar>/g, "$"));
+  } else {
+    reg = mask;
+  }
+
+  return reg;
+}
+
+/**
+ * Extract subset of environment variables from given object.
+ * @param {string|RegExp} mask - Environment variable not matching to the mask will be abandoned.
+ * @param {object} obj - Usually you will pass process.env here
+ * @returns Record<string, string>
+ */
+function pickEnvironmentVariables(mask, obj) {
+  const reg = produceRegex(mask);
+
+  return Object.keys(obj).reduce((acc, key) => {
+    if (reg.test(key)) {
+      acc[key] = obj[key];
+    }
+
+    return acc;
+  }, {});
+}
+
 module.exports = {
   serializeInPrettierCompatibleWay,
+  produceRegex,
   presentExtractedVariables,
+  pickEnvironmentVariables,
   returnProcessed,
   saveToFile,
   findWidestKeyLen,
