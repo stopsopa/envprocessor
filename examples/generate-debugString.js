@@ -4,14 +4,12 @@
  *   EXPOSE_ENV_VARIABLES="^TERM" VERBOSE=true node examples/generate-debugString.js
  */
 
-const { getThrow, get } = require("envprocessor/env.js");
+const { getThrow, has } = require("envprocessor/env.js");
 
 const {
   saveToFile,
-  presentExtractedVariables,
   pickEnvironmentVariables,
   produceFileContent,
-  getCredit,
   debugString,
 } = require("envprocessor/preprocessor.js");
 
@@ -40,6 +38,6 @@ files.forEach((file) => {
   saveToFile(file, content);
 });
 
-if (get("VERBOSE")) {
+if (has("VERBOSE")) {
   console.log(debugString(envVarFiltered, files));
 }

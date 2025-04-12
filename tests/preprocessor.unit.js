@@ -8,6 +8,7 @@ const {
   pickEnvironmentVariables,
   getCredit,
   debugString,
+  debugJson,
 } = require("../src/preprocessor.js");
 
 const path = require("path");
@@ -339,6 +340,62 @@ abc  : 'd'`,
       // Act & Assert
       expect(() => debugString(envVarFiltered, files)).toThrow(
         "preprocessor.js error: debugString: files should contain at least one file"
+      );
+    });
+  });
+
+  describe("debugJson", () => {
+    it("should return a properly structured JSON object with environment variables and files", () => {
+      // Arrange
+      const envVarFiltered = {
+        TEST_VAR: "test_value",
+        ANOTHER_VAR: "another_value"
+      };
+      const files = ["/path/to/file1.js", "/path/to/file2.js"];
+      const packageJson = require("../package.json");
+      const expectedCredit = `${packageJson.name} v${packageJson.version}`;
+      
+      // Act
+      const result = debugJson(envVarFiltered, files);
+      
+      // Assert
+      expect(result).toEqual({
+        credit: expectedCredit,
+        envVarFiltered: envVarFiltered,
+        files: files
+      });
+    });
+    
+    it("should throw error if envVarFiltered is not an object", () => {
+      // Arrange
+      const envVarFiltered = "not an object";
+      const files = ["/path/to/file.js"];
+      
+      // Act & Assert
+      expect(() => debugJson(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugJson: envVarFiltered should be an object"
+      );
+    });
+    
+    it("should throw error if files is not an array", () => {
+      // Arrange
+      const envVarFiltered = { TEST_VAR: "test_value" };
+      const files = "not an array";
+      
+      // Act & Assert
+      expect(() => debugJson(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugJson: files should be an array"
+      );
+    });
+    
+    it("should throw error if files array is empty", () => {
+      // Arrange
+      const envVarFiltered = { TEST_VAR: "test_value" };
+      const files = [];
+      
+      // Act & Assert
+      expect(() => debugJson(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugJson: files should contain at least one file"
       );
     });
   });

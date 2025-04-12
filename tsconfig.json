@@ -9,5 +9,5 @@
     "resolveJsonModule": true // Add this line
   },
   "include": ["src/**/*.js"],
-  "exclude": ["src/preprocessorMiddleware.js"] // Add this line
+  "exclude": ["examples/preprocessorMiddleware.js"] // Add this line
 }

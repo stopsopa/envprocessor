@@ -118,6 +118,7 @@ function getIntegerDefault(key, defaultValue) {
     return defaultValue;
   }
 }
+
 /**
  * get env var cast to integer and throw if anything during casting to int fail or env var is not defined
  * @param {string} key

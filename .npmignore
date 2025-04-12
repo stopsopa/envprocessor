@@ -37,5 +37,6 @@ pull-docker-image.sh
 index.html
 /server.cert
 /server.key
-
+/examples/
 /tests/generate.js
+tsconfig.json

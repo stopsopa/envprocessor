@@ -223,6 +223,32 @@ ${files.map((file) => `    - ${file}`).join("\n")}
 `;
 }
 
+/**
+ * Creates a debug string with environment variables and generated files
+ * @param {Record<string, string>} envVarFiltered
+ * @param {string[]} files
+ * @returns {Record<string, unknown>}
+ */
+function debugJson(envVarFiltered, files) {
+  if (!isObject(envVarFiltered)) {
+    throw th("debugJson: envVarFiltered should be an object");
+  }
+
+  if (!Array.isArray(files)) {
+    throw th("debugJson: files should be an array");
+  }
+
+  if (files.length === 0) {
+    throw th("debugJson: files should contain at least one file");
+  }
+
+  return {
+    credit: getCredit(),
+    envVarFiltered,
+    files,
+  };
+}
+
 module.exports = {
   serializeInPrettierCompatibleWay,
   produceRegex,
@@ -233,5 +259,6 @@ module.exports = {
   findWidestKeyLen,
   getCredit,
   debugString,
+  debugJson,
   th,
 };

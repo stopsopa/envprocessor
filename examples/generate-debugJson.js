@@ -1,18 +1,16 @@
 /**
  * Possible variants to run:
- *   EXPOSE_ENV_VARIABLES="^TERM" node examples/generate-debugManual.js
- *   EXPOSE_ENV_VARIABLES="^TERM" VERBOSE=true node examples/generate-debugManual.js
+ *   EXPOSE_ENV_VARIABLES="^TERM" node examples/generate-debugJson.js
+ *   EXPOSE_ENV_VARIABLES="^TERM" VERBOSE=true node examples/generate-debugJson.js
  */
 
 const { getThrow, has } = require("envprocessor/env.js");
 
 const {
   saveToFile,
-  presentExtractedVariables,
   pickEnvironmentVariables,
   produceFileContent,
-  getCredit,
-  debugString,
+  debugJson,
 } = require("envprocessor/preprocessor.js");
 
 // Define a mask which can be used to extract subset from all environment variables
@@ -40,18 +38,13 @@ files.forEach((file) => {
   saveToFile(file, content);
 });
 
-// optional but recommended block to print out exposed env vars on the ouptput
-// here we made this logic depend on VERBOSE env var
 if (has("VERBOSE")) {
-  console.log(`
-${getCredit()}
-
-  Browser exposed environment variables:
-  
-${presentExtractedVariables(envVarFiltered, 4)}
-
-  Generated files:
-
-${files.map((file) => `    - ${file}`).join("\n")}
-`);
+  console.log(
+    JSON.stringify({
+      level: "info",
+      "@timestamp": new Date().toISOString(),
+      message: "envprocessor",
+      meta: debugJson(envVarFiltered, files),
+    }),
+  );
 }
