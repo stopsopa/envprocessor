@@ -8,6 +8,10 @@ const isObject = require("./isObject.js");
 
 const { mkdirp } = require("mkdirp");
 
+/**
+ * @param {string} msg
+ * @returns {Error}
+ */
 function th(msg) {
   return new Error(`preprocessor.js error: ${msg}`);
 }
@@ -19,7 +23,8 @@ function th(msg) {
  * Needed for proper formatting of processed file for the browser.
  * @param {any} object
  * @param {string | number} [space]
- * @returns
+ * @param {number} [indentExceptFirstLine]
+ * @returns {string}
  */
 function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLine = 2) {
   if (Object.keys(object).length === 0) {
@@ -40,6 +45,11 @@ function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLi
   return str;
 }
 
+/**
+ * Finds the length of the widest key in an object
+ * @param {Record<string, any>} obj
+ * @returns {number}
+ */
 function findWidestKeyLen(obj) {
   return Object.keys(obj).reduce((acc, key) => {
     const l = key.length;
@@ -52,6 +62,12 @@ function findWidestKeyLen(obj) {
   }, 0);
 }
 
+/**
+ * Formats extracted environment variables for display
+ * @param {Record<string, string>} obj
+ * @param {number} [indent]
+ * @returns {string}
+ */
 function presentExtractedVariables(obj, indent = 2) {
   const max = findWidestKeyLen(obj) + 1;
 
@@ -70,6 +86,12 @@ function presentExtractedVariables(obj, indent = 2) {
   return s + buffer.join("\n" + s);
 }
 
+/**
+ * Produces file content with environment variables
+ * @param {Record<string, string>} obj
+ * @param {function(Record<string, string>): string} [template]
+ * @returns {string}
+ */
 function produceFileContent(
   obj,
   template = function (obj) {
@@ -81,10 +103,12 @@ function produceFileContent(
 ) {
   return template(obj);
 }
+
 /**
  * Dumps given object to the file after processing with produceFileContent()
- * @param {string} file
- * @param {string} obj
+ * @param {string} file - Path to the file
+ * @param {string} content - Content to write to the file
+ * @returns {void}
  */
 function saveToFile(file, content) {
   if (typeof content !== "string") {
@@ -105,9 +129,9 @@ function saveToFile(file, content) {
 }
 
 /**
- * Doing what it cane to convert mask to RegExp, if it is already a RegExp, it will be returned as is.
+ * Doing what it can to convert mask to RegExp, if it is already a RegExp, it will be returned as is.
  * @param {string|RegExp} mask
- * @returns RegExp
+ * @returns {RegExp}
  */
 function produceRegex(mask) {
   let reg;
@@ -126,10 +150,10 @@ function produceRegex(mask) {
 }
 
 /**
- * Extract subset of environment variables from given object.
+ * Extract subset of environment variables from given wider set.
  * @param {string|RegExp} mask - Environment variable not matching to the mask will be abandoned.
- * @param {object} obj - Usually you will pass process.env here
- * @returns Record<string, string>
+ * @param {Record<string, string>} obj - Usually you will pass process.env here
+ * @returns {Record<string, string>}
  */
 function pickEnvironmentVariables(mask, obj) {
   const reg = produceRegex(mask);
@@ -145,10 +169,20 @@ function pickEnvironmentVariables(mask, obj) {
 
 const packageJson = require("../package.json");
 
+/**
+ * Returns the credit string with package name and version
+ * @returns {string}
+ */
 function getCredit() {
   return `${packageJson.name} v${packageJson.version}`;
 }
 
+/**
+ * Creates a debug string with environment variables and generated files
+ * @param {Record<string, string>} envVarFiltered
+ * @param {string[]} files
+ * @returns {string}
+ */
 function debugString(envVarFiltered, files) {
   if (!isObject(envVarFiltered)) {
     throw th("debugString: envVarFiltered should be an object");
