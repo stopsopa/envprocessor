@@ -8,28 +8,36 @@ const isObject = require("./isObject.js");
 
 const { mkdirp } = require("mkdirp");
 
-function log(...args) {
-  console.log(`preprocessor.js log: `, ...args);
-}
-
 function th(msg) {
   return new Error(`preprocessor.js error: ${msg}`);
 }
 
-function serializeInPrettierCompatibleWay(object) {
-  const tmp = [];
-  Object.entries(object).forEach(([key, value]) => {
-    const _key = JSON.stringify(key, false);
-    const _value = JSON.stringify(value, true);
-    tmp.push(`  ${_key}: ${_value}`);
-  });
-
-  if (tmp.length > 0) {
-    return `{
-  ${tmp.join(",\n  ")}
-  }`;
+/**
+ * object, and space goes straight to JSON.stringify,
+ * but indentExceptFirstLine is to add additional indentation to all lines except the first one.
+ *
+ * Needed for proper formatting of processed file for the browser.
+ * @param {any} object
+ * @param {string | number} [space]
+ * @returns
+ */
+function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLine = 2) {
+  if (Object.keys(object).length === 0) {
+    return "{}";
   }
-  return `{}`;
+
+  const str = JSON.stringify(object, null, space)
+    .split("\n")
+    .map((line, i) => {
+      if (i === 0) {
+        return line;
+      }
+
+      return " ".repeat(indentExceptFirstLine) + line;
+    })
+    .join("\n");
+
+  return str;
 }
 
 function findWidestKeyLen(obj) {
@@ -47,18 +55,12 @@ function findWidestKeyLen(obj) {
 function presentExtractedVariables(obj, indent = 2) {
   const max = findWidestKeyLen(obj) + 1;
 
-  // log("Web exposed environment variables:");
-
   let buffer = [];
 
   Object.keys(obj).map((key) => {
     const l = key.length;
 
-    let k = key;
-
-    if (l < max) {
-      k += " ".repeat(max - l);
-    }
+    const k = `${key}${" ".repeat(max - l)}`;
 
     buffer.push(`${k}: '${obj[key]}'`);
   });
@@ -80,8 +82,6 @@ function produceFileContent(obj) {
  * @param {object} obj
  */
 function saveToFile(file, obj) {
-  // log(`Saving ${file}`);
-
   const dir = path.dirname(file);
 
   if (!fs.existsSync(dir)) {
@@ -176,6 +176,6 @@ module.exports = {
   findWidestKeyLen,
   getCredit,
   debugString,
-  log,
+
   th,
 };

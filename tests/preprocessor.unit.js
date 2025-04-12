@@ -274,7 +274,7 @@ abc  : 'd'`,
   });
 
   describe("debugString", () => {
-    it.only("should format debug information correctly", () => {
+    it("should format debug information correctly", () => {
       // Arrange
       const envVarFiltered = {
         TEST_VAR: "test_value",
