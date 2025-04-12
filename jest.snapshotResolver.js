@@ -49,7 +49,9 @@ const resolver_just_snap_js = {
 
     const filename = path.basename(testPath, path.extname(testPath));
 
-    return path.join(dirname, `${filename}${DOT_EXTENSION}`);
+    const final = path.join(dirname, `${filename}${DOT_EXTENSION}`);
+
+    return final;
   },
   resolveTestPath: (snapshotPath) => {
     const dirname = path.dirname(snapshotPath);
@@ -58,7 +60,9 @@ const resolver_just_snap_js = {
 
     filename = path.basename(filename, path.extname(filename));
 
-    return path.join(dirname, `${filename}.js`);
+    const final = path.join(dirname, `${filename}.js`);
+
+    return final;
   },
 
   // Example test path, used for preflight consistency check of the implementation above

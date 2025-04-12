@@ -4,6 +4,8 @@ const fs = require("fs");
 
 const stringToRegex = require("./stringToRegex.js");
 
+const isObject = require("./isObject.js");
+
 const { mkdirp } = require("mkdirp");
 
 function log(...args) {
@@ -132,6 +134,38 @@ function pickEnvironmentVariables(mask, obj) {
   }, {});
 }
 
+const packageJson = require("../package.json");
+
+function getCredit() {
+  return `${packageJson.name} v${packageJson.version}`;
+}
+
+function debugString(envVarFiltered, files) {
+  if (!isObject(envVarFiltered)) {
+    throw th("debugString: envVarFiltered should be an object");
+  }
+
+  if (!Array.isArray(files)) {
+    throw th("debugString: files should be an array");
+  }
+
+  if (files.length === 0) {
+    throw th("debugString: files should contain at least one file");
+  }
+
+  return `
+${getCredit()}
+
+  Browser exposed environment variables:
+  
+${presentExtractedVariables(envVarFiltered, 4)}
+
+  Generated files:
+
+${files.map((file) => `    - ${file}`).join("\n")}
+`;
+}
+
 module.exports = {
   serializeInPrettierCompatibleWay,
   produceRegex,
@@ -140,6 +174,8 @@ module.exports = {
   produceFileContent,
   saveToFile,
   findWidestKeyLen,
+  getCredit,
+  debugString,
   log,
   th,
 };

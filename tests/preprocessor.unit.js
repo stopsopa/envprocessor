@@ -6,6 +6,8 @@ const {
   findWidestKeyLen,
   produceRegex,
   pickEnvironmentVariables,
+  getCredit,
+  debugString,
 } = require("../src/preprocessor.js");
 
 const path = require("path");
@@ -98,7 +100,6 @@ abcd : 'e'
 abc  : 'd'`,
     );
   });
-
 
   it("presentExtractedVariables default", async () => {
     const obj = {
@@ -255,6 +256,83 @@ abc  : 'd'`,
         GIPHY_API_KEY: "GIPHY_API_KEY_1",
         PROD: "PROD_1",
       });
+    });
+  });
+
+  describe("getCredit", () => {
+    it("should return package name and version in the expected format", () => {
+      // Arrange
+      const packageJson = require("../package.json");
+      const expectedCredit = `${packageJson.name} v${packageJson.version}`;
+      
+      // Act
+      const result = getCredit();
+      
+      // Assert
+      expect(result).toBe(expectedCredit);
+    });
+  });
+
+  describe("debugString", () => {
+    it.only("should format debug information correctly", () => {
+      // Arrange
+      const envVarFiltered = {
+        TEST_VAR: "test_value",
+        ANOTHER_VAR: "another_value"
+      };
+      const files = ["/path/to/file1.js", "/path/to/file2.js"];
+      const packageJson = require("../package.json");
+      
+      // Act
+      const result = debugString(envVarFiltered, files);
+
+    //   console.log(`>${result}<`)
+      
+      // Assert
+      expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
+      const toArray = result.split("\n");
+      toArray.shift();
+      toArray.shift();
+      const join = toArray.join("\n");
+      expect(join).toMatchSnapshot();
+    //   expect(result).toContain("TEST_VAR      : 'test_value'");
+    //   expect(result).toContain("ANOTHER_VAR   : 'another_value'");
+    //   expect(result).toContain("Generated files:");
+    //   expect(result).toContain("    - /path/to/file1.js");
+    //   expect(result).toContain("    - /path/to/file2.js");
+    });
+    
+    it("should throw error if envVarFiltered is not an object", () => {
+      // Arrange
+      const envVarFiltered = "not an object";
+      const files = ["/path/to/file.js"];
+      
+      // Act & Assert
+      expect(() => debugString(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugString: envVarFiltered should be an object"
+      );
+    });
+    
+    it("should throw error if files is not an array", () => {
+      // Arrange
+      const envVarFiltered = { TEST_VAR: "test_value" };
+      const files = "not an array";
+      
+      // Act & Assert
+      expect(() => debugString(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugString: files should be an array"
+      );
+    });
+    
+    it("should throw error if files array is empty", () => {
+      // Arrange
+      const envVarFiltered = { TEST_VAR: "test_value" };
+      const files = [];
+      
+      // Act & Assert
+      expect(() => debugString(envVarFiltered, files)).toThrow(
+        "preprocessor.js error: debugString: files should contain at least one file"
+      );
     });
   });
 });
