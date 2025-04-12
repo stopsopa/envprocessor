@@ -172,26 +172,33 @@ abc  : 'd'`,
       jest.restoreAllMocks();
     });
 
-    it("should save processed object to file", () => {
+    it("should save content to file", () => {
       // Arrange
       const testFile = "/test/file.js";
-      const testObj = { TEST_VAR: "test_value" };
-      const expectedContent = produceFileContent(testObj);
+      const testContent = "console.log('test content');";
 
       // Act
-      saveToFile(testFile, testObj);
+      saveToFile(testFile, testContent);
 
       // Assert
       expect(path.dirname).toHaveBeenCalledWith(testFile);
-      expect(fs.writeFileSync).toHaveBeenCalledWith(testFile, expectedContent);
-      // expect(console.log).toHaveBeenCalledWith("preprocessor.js log: ", `Saving ${testFile}`);
+      expect(fs.writeFileSync).toHaveBeenCalledWith(testFile, testContent);
+    });
+
+    it("should throw error if content is not a string", () => {
+      // Arrange
+      const testFile = "/test/file.js";
+      const testObj = { TEST_VAR: "test_value" };
+
+      // Act & Assert
+      expect(() => saveToFile(testFile, testObj)).toThrow("preprocessor.js error: saveToFile: content should be a string");
     });
 
     it("should create directory if it does not exist", () => {
       // Arrange
       const mkdirp = require("mkdirp");
       const testFile = "/test/new/directory/file.js";
-      const testObj = { TEST_VAR: "test_value" };
+      const testContent = "console.log('test content');";
 
       // Mock fs.existsSync to return false for directory check and true for file check
       fs.existsSync.mockImplementation((path) => {
@@ -202,7 +209,7 @@ abc  : 'd'`,
       });
 
       // Act
-      saveToFile(testFile, testObj);
+      saveToFile(testFile, testContent);
 
       // Assert
       expect(mkdirp.mkdirp.sync).toHaveBeenCalledWith("/mock/directory");
@@ -212,7 +219,7 @@ abc  : 'd'`,
     it("should throw error if file creation fails", () => {
       // Arrange
       const testFile = "/test/fail/file.js";
-      const testObj = { TEST_VAR: "test_value" };
+      const testContent = "console.log('test content');";
 
       // Mock fs.existsSync to return true for directory check and false for file check
       fs.existsSync.mockImplementation((path) => {
@@ -223,16 +230,16 @@ abc  : 'd'`,
       });
 
       // Act & Assert
-      expect(() => saveToFile(testFile, testObj)).toThrow(`preprocessor.js error: File '${testFile}' creation failed`);
+      expect(() => saveToFile(testFile, testContent)).toThrow(`preprocessor.js error: File '${testFile}' creation failed`);
     });
   });
 
   describe("pickEnvironmentVariables", () => {
     it("basic", () => {
-      const EXPOSE_EXTRA_ENV_VARIABLES =
+      const EXPOSE_ENV_VARIABLES =
         "/(^PUBLIC_|^FIREBASE_|^(PROJECT_NAME|NODE_API_PORT|GITHUB_SOURCES_PREFIX|GIPHY_API_KEY|PROD)<dollar>)/";
 
-      const result = pickEnvironmentVariables(EXPOSE_EXTRA_ENV_VARIABLES, {
+      const result = pickEnvironmentVariables(EXPOSE_ENV_VARIABLES, {
         PUBLIC_: "PUBLIC_1",
         PUBLIC_MORE: "PUBLIC_2",
         PUBLIC: "PUBLIC_3",

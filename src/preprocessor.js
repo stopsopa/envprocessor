@@ -84,16 +84,20 @@ function produceFileContent(
 /**
  * Dumps given object to the file after processing with produceFileContent()
  * @param {string} file
- * @param {object} obj
+ * @param {string} obj
  */
-function saveToFile(file, obj) {
+function saveToFile(file, content) {
+  if (typeof content !== "string") {
+    throw th("saveToFile: content should be a string");
+  }
+
   const dir = path.dirname(file);
 
   if (!fs.existsSync(dir)) {
     mkdirp.sync(dir);
   }
 
-  fs.writeFileSync(file, produceFileContent(obj));
+  fs.writeFileSync(file, content);
 
   if (!fs.existsSync(file)) {
     throw th(`File '${file}' creation failed`);
@@ -181,6 +185,5 @@ module.exports = {
   findWidestKeyLen,
   getCredit,
   debugString,
-
   th,
 };
