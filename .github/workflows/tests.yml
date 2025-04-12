@@ -57,8 +57,8 @@ jobs:
           ls -la
           ls -la node_modules || true
 
-      - name: npm install
-        run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json -- npm ci
+      - name: npm ci
+        run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm ci
 
       - uses: actions/cache/save@v3 # https://github.com/actions/cache/blob/main/caching-strategies.md#reusing-primary-key-from-restore-cache-as-input-to-save-action
         with:
@@ -128,7 +128,7 @@ jobs:
           node-version: 22
 
       - name: Install semantic-release
-        run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json -- npm install semantic-release conventional-changelog-conventionalcommits
+        run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install semantic-release conventional-changelog-conventionalcommits
         # it has to be done here beacause otherwise it will crash for node@15 with error>>> error semantic-release@19.0.5: The engine "node" is incompatible with this module. Expected version ">=16 || ^14.17". Got "15.14.0"
 
       # - name: pull jsr
