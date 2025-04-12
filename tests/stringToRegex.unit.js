@@ -57,7 +57,7 @@ it("stringToRegex simple error", (done) => {
     done("error");
   } catch (e) {
     expect(String(e)).toEqual(
-      "Error: stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' splits to more than 2 segments",
+      "Error: stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' should split to one or two segments",
     );
 
     done();

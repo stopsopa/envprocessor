@@ -65,7 +65,7 @@ describe("preprocessor", () => {
 
       // Act & Assert
       expect(() => produceRegex(mask)).toThrow(
-        "stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' splits to more than 2 segments",
+        "stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' should split to one or two segments",
       );
     });
   });

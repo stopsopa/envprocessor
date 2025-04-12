@@ -12,6 +12,7 @@ const {
   pickEnvironmentVariables,
   produceFileContent,
   getCredit,
+  debugString,
 } = require("envprocessor/preprocessor.js");
 
 // Define a mask which can be used to extract subset from all environment variables

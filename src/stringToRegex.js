@@ -15,7 +15,7 @@ const stringToRegex = (function () {
       const vv = v.match(/(\\.|[^/])+/g);
 
       if (!vv || vv.length > 2) {
-        throw new Error(`param '${v}' splits to more than 2 segments`);
+        throw new Error(`param '${v}' should split to one or two segments`);
       }
 
       return new RegExp(vv[0], vv[1]);

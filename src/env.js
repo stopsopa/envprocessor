@@ -7,10 +7,6 @@ const isNode = require("detect-node");
 const th = (msg) => new Error(`env.js: ${msg}`);
 
 /**
- * @typedef {Object.<string, string>} Env
- */
-
-/**
  * @type {Record<string, string>}
  */
 let env;
@@ -25,7 +21,7 @@ if (isNode) {
 
 /**
  * For testing purposes, it is possible to substitute the object process.env with a custom object.
- * @param {Env} map
+ * @param {Record<string, string>} map
  */
 function mockEnv(map) {
   env = map;
@@ -82,23 +78,22 @@ const intTest = /^-?\d+$/;
  */
 function getIntegerThrowInvalid(key) {
   if (has(key)) {
-    const value = get(key);
+    // We know the value exists because has(key) returned true
+    const value = /** @type {string} */ (get(key));
 
-    if (typeof value === "string") {
-      if (!intTest.test(value)) {
-        throw th(`env var ${key} is not a number. value >${value}<, doesn't match regex >${intTest}<`);
-      }
-
-      const int = parseInt(value, 10);
-
-      const strint = String(int);
-
-      if (!intTest.test(strint)) {
-        throw th(`parseInt(${value}, 10) returned ${strint}, doesn't match regex >${intTest}<`);
-      }
-
-      return int;
+    if (!intTest.test(value)) {
+      throw th(`env var ${key} is not a number. value >${value}<, doesn't match regex >${intTest}<`);
     }
+
+    const int = parseInt(value, 10);
+
+    const strint = String(int);
+
+    if (!intTest.test(strint)) {
+      throw th(`parseInt(${value}, 10) returned ${strint}, doesn't match regex >${intTest}<`);
+    }
+
+    return int;
   }
 
   return undefined;
