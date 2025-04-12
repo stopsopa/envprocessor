@@ -5,6 +5,7 @@ const {
   returnProcessed,
   findWidestKeyLen,
   produceRegex,
+  pickEnvironmentVariables,
 } = require("../src/preprocessor.js");
 
 const path = require("path");
@@ -203,6 +204,38 @@ describe("preprocessor", () => {
 
       // Act & Assert
       expect(() => saveToFile(testFile, testObj)).toThrow(`preprocessor.js error: File '${testFile}' creation failed`);
+    });
+  });
+
+  describe("pickEnvironmentVariables", () => {
+    it("basic", () => {
+      const EXPOSE_EXTRA_ENV_VARIABLES =
+        "/(^PUBLIC_|^FIREBASE_|^(PROJECT_NAME|NODE_API_PORT|GITHUB_SOURCES_PREFIX|GIPHY_API_KEY|PROD)<dollar>)/";
+
+      const result = pickEnvironmentVariables(EXPOSE_EXTRA_ENV_VARIABLES, {
+        PUBLIC_: "PUBLIC_1",
+        PUBLIC_MORE: "PUBLIC_2",
+        PUBLIC: "PUBLIC_3",
+        PUBLEC_: "PUBLIC_4",
+        PROJECT_NAME: "PROJECT_NAME_1",
+        PROJECT_NAME_: "PROJECT_NAME_2",
+        NODE_API_PORT: "NODE_API_PORT_1",
+        NODE_API_PORT_: "NODE_API_PORT_2",
+        GITHUB_SOURCES_PREFIX: "GITHUB_SOURCES_PREFIX_1",
+        GIPHY_API_KEY: "GIPHY_API_KEY_1",
+        PROD: "PROD_1",
+        PROD_: "PROD_2",
+      });
+
+      expect(result).toEqual({
+        PUBLIC_: "PUBLIC_1",
+        PUBLIC_MORE: "PUBLIC_2",
+        PROJECT_NAME: "PROJECT_NAME_1",
+        NODE_API_PORT: "NODE_API_PORT_1",
+        GITHUB_SOURCES_PREFIX: "GITHUB_SOURCES_PREFIX_1",
+        GIPHY_API_KEY: "GIPHY_API_KEY_1",
+        PROD: "PROD_1",
+      });
     });
   });
 });
