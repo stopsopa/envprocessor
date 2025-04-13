@@ -1,4 +1,4 @@
-const isNode = require("detect-node");
+const isNode = typeof global !== "undefined" && Object.prototype.toString.call(global.process) === "[object process]";
 
 /**
  * @param {string} msg

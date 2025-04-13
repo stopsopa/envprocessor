@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre>
+        
+    node node_modules/envprocessor/src/cli.js --mask "^TERM_" --verbose --enrichModule "commonjs.js" var/preprocessed.js
+
+    HOST="0.0.0.0" PORT="8433" node server.js
+
+    </pre>
+    <script src="var/preprocessed.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "env": "/node_modules/envprocessor/src/env.mjs"
+        }
+      }
+    </script>
+    <script type="module">
+      import env from "env";
+
+      const { mockEnv, has, get, getDefault, getThrow, getIntegerThrowInvalid, getIntegerDefault, getIntegerThrow } =
+        env;
+
+      const pre = document.querySelector("pre");
+
+      console.log("pre", pre);
+
+      pre.innerHTML += `
+
+    COMMON_TEST: ${get("COMMON_TEST")}
+    TERM_PROGRAM: ${get("TERM_PROGRAM")}
+    TERM_PROGRAM_VERSION: ${get("TERM_PROGRAM_VERSION")}
+
+`;
+    </script>
+  </body>
+</html>

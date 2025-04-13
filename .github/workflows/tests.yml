@@ -131,6 +131,8 @@ jobs:
         run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install semantic-release conventional-changelog-conventionalcommits
         # it has to be done here beacause otherwise it will crash for node@15 with error>>> error semantic-release@19.0.5: The engine "node" is incompatible with this module. Expected version ">=16 || ^14.17". Got "15.14.0"
 
+      - name: esbuild
+        run: node_modules/.bin/esbuild src/env.js --bundle --platform=browser --format=esm --outfile=src/env.mjs
       # - name: pull jsr
       #   run: |
       #     rm -rf *

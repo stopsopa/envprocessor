@@ -225,4 +225,8 @@ function log(mmsg) {
   if (verbose) {
     console.log(debugString(envVarFiltered, files));
   }
+
+  if (debug) {
+    console.log(`final processed.js file: >${content}<`);
+  }
 })();
