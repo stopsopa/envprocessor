@@ -13,9 +13,9 @@
     "envprocessor": "src/cli.js"
   },
   "exports": {
-    "./*.js": {
-      "default": "./src/*.mjs",
-      "require":  "./src/*.js"
+    "./*": {
+      "import": "./src/*.mjs",
+      "require": "./src/*.js"
     }
   }
 }

@@ -38,3 +38,13 @@ then use env vars in browser using:
 
 ```js
 
+# ESM
+import { get } from "envprocessor/env";
+
+// CJS
+const {get} = require("envprocessor/env");
+
+console.log(`get('USER') >${get("USER")}`);
+
+```
+
