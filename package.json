@@ -9,12 +9,11 @@
   "dependencies": {
     "mkdirp": "^3.0.1"
   },
+  "bin": {
+    "envprocessor": "src/cli.js"
+  },
   "exports": {
     "./*.js": {
-      "types": "./src/*.d.ts",
-      "default": "./src/*.js"
-    },
-    "./*": {
       "types": "./src/*.d.ts",
       "default": "./src/*.js"
     }
