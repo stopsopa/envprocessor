@@ -2,7 +2,7 @@ const { getThrow } = require("envprocessor/env.js");
 
 const { pickEnvironmentVariables, produceFileContent } = require("envprocessor/preprocessor.js");
 
-const mask = getThrow("EXPOSE_ENV_VARIABLES");
+const mask = getThrow("ENVPROCESSOR_EXPOSE_ENV_VARS");
 
 const envVarFiltered = pickEnvironmentVariables(mask, process.env);
 

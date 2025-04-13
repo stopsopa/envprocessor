@@ -237,10 +237,10 @@ abc  : 'd'`,
 
   describe("pickEnvironmentVariables", () => {
     it("basic", () => {
-      const EXPOSE_ENV_VARIABLES =
+      const ENVPROCESSOR_EXPOSE_ENV_VARS =
         "/(^PUBLIC_|^FIREBASE_|^(PROJECT_NAME|NODE_API_PORT|GITHUB_SOURCES_PREFIX|GIPHY_API_KEY|PROD)<dollar>)/";
 
-      const result = pickEnvironmentVariables(EXPOSE_ENV_VARIABLES, {
+      const result = pickEnvironmentVariables(ENVPROCESSOR_EXPOSE_ENV_VARS, {
         PUBLIC_: "PUBLIC_1",
         PUBLIC_MORE: "PUBLIC_2",
         PUBLIC: "PUBLIC_3",

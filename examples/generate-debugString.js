@@ -1,7 +1,7 @@
 /**
  * Possible variants to run:
- *   EXPOSE_ENV_VARIABLES="^TERM" node examples/generate-debugString.js
- *   EXPOSE_ENV_VARIABLES="^TERM" VERBOSE=true node examples/generate-debugString.js
+ *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" node examples/generate-debugString.js
+ *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" VERBOSE=true node examples/generate-debugString.js
  */
 
 const { getThrow, has } = require("envprocessor/env.js");
@@ -16,10 +16,10 @@ const {
 // Define a mask which can be used to extract subset from all environment variables
 // whichever env var matches that regex it will be exposed to the browser
 // Obviously be careful here
-const mask = getThrow("EXPOSE_ENV_VARIABLES");
+const mask = getThrow("ENVPROCESSOR_EXPOSE_ENV_VARS");
 
 // use mask to extract subset of env vars
-const envVarFiltered = pickEnvironmentVariables(mask, process.env);
+const envVarFiltered = pickEnvironmentVariables(mask, /** @type {Record<string, string>}*/ (process.env));
 
 const content = produceFileContent(envVarFiltered);
 
