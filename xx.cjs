@@ -76,11 +76,13 @@ cat <<EEE
 
 /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install
 
+/bin/bash bash/swap-files-v2.sh package.json package.dev.json -- npm install
+
 EEE
 read -p "\n      Press enter to continue\n"
 
-/bin/bash bash/swap-files-v2.sh package.json package.dev.json -- npm install
-npm run prepare
+/bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install
+
 `,
       description: `test server`,
       confirm: false,

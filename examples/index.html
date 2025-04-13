@@ -7,7 +7,7 @@
   </head>
   <body>
     <pre>
-        
+
     node node_modules/envprocessor/src/cli.js --mask "^TERM_" --verbose --enrichModule "commonjs.js" var/preprocessed.js
 
     HOST="0.0.0.0" PORT="8433" node server.js
@@ -24,7 +24,7 @@
     <script type="module">
       import env from "env";
 
-      const { mockEnv, has, get, getDefault, getThrow, getIntegerThrowInvalid, getIntegerDefault, getIntegerThrow } =
+      const { mockEnv, all, has, get, getDefault, getThrow, getIntegerThrowInvalid, getIntegerDefault, getIntegerThrow } =
         env;
 
       const pre = document.querySelector("pre");
@@ -36,6 +36,8 @@
     COMMON_TEST: ${get("COMMON_TEST")}
     TERM_PROGRAM: ${get("TERM_PROGRAM")}
     TERM_PROGRAM_VERSION: ${get("TERM_PROGRAM_VERSION")}
+
+    all: ${JSON.stringify(all(), null, 4)}
 
 `;
     </script>

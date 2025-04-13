@@ -4,7 +4,7 @@
   "author": "Szymon Działowski",
   "description": "",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/env.js",
   "homepage": "https://github.com/stopsopa/envprocessor",
   "dependencies": {
     "mkdirp": "^3.0.1"
