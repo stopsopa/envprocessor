@@ -206,9 +206,7 @@ function debugString(envVarFiltered, files) {
     throw th("debugString: files should be an array");
   }
 
-  if (files.length === 0) {
-    throw th("debugString: files should contain at least one file");
-  }
+  const list = files.length > 0 ? files.map((file) => `    - ${file}`).join("\n") : "    none"
 
   return `
 ${getCredit()}
@@ -219,7 +217,7 @@ ${presentExtractedVariables(envVarFiltered, 4)}
 
   Generated files:
 
-${files.map((file) => `    - ${file}`).join("\n")}
+${list}
 `;
 }
 

@@ -9,7 +9,7 @@
  *
  * -- specify enrich module to add or process extracted env vars
  * node src/cli.js --mask "/^TERM_.*<dollar>/gi" var/preprocessed.js var/deep/directory/preprocessed.js --verbose --debug --enrichModule "./enrich.js"
- * 
+ *
  * -- specify enrich module via env var
  * ENVPROCESSOR_ENRICH_MODULE="./enrich.js" node src/cli.js --mask "/^TERM_.*<dollar>/gi" var/preprocessed.js var/deep/directory/preprocessed.js --verbose --debug --enrichModuleEnv ENVPROCESSOR_ENRICH_MODULE
  */
@@ -88,15 +88,6 @@ function log(mmsg) {
 
   let mask;
 
-  // handle --mask "^TERM_"
-  if (values.mask) {
-    debug && log(`--mask argument given >${values.mask}<`);
-
-    mask = values.mask;
-  } else {
-    debug && log("--mask argument is not defined");
-  }
-
   // handle --maskEnv "ENVPROCESSOR_EXPOSE_ENV_VARS"
   if (values.maskEnv) {
     debug && log(`--maskEnv argument given >${values.maskEnv}<`);
@@ -108,9 +99,20 @@ function log(mmsg) {
     debug && log("--maskEnv argument is not defined");
   }
 
+  // handle --mask "^TERM_"
+  if (values.mask) {
+    debug && log(`--mask argument given >${values.mask}<`);
+
+    mask = values.mask;
+  } else {
+    debug && log("--mask argument is not defined");
+  }
+
   if (typeof mask !== "string") {
     throw th(`mask was not defined, use either --maskEnv or --mask`);
   }
+
+  debug && log(`final mask after transforming to regex is >${String(produceRegex(mask))}<`);
 
   // handle positionals arguments
   // don't throw in debug mode
@@ -121,9 +123,7 @@ function log(mmsg) {
   }
   const files = positionals;
 
-  // handle --verbose
-  let verbose = values.verbose;
-  debug && log(`--verbose mode is ${verbose ? "enabled" : "disabled"}`);
+  let verbose;
 
   // handle --verboseEnv ""
   if (values.verboseEnv) {
@@ -135,20 +135,11 @@ function log(mmsg) {
   } else {
     debug && log("--verboseEnv argument is not defined");
   }
+  // handle --verbose
+  verbose = values.verbose;
+  debug && log(`final --verbose mode is ${verbose ? "enabled" : "disabled"}`);
 
-  if (debug) {
-    log(`mask after transforming to regex: >${String(produceRegex(mask))}<`);
-  }
-
-  // handle --enrichModule "enrich.cjs"
   let enrichModule = null;
-  if (values.enrichModule) {
-    debug && log(`--enrichModule argument given >${values.enrichModule}<`);
-
-    enrichModule = values.enrichModule;
-  } else {
-    debug && log("--enrichModule argument is not defined");
-  }
 
   // handle --enrichModuleEnv "ENVPROCESSOR_ENRICH_MODULE"
   if (values.enrichModuleEnv) {
@@ -163,6 +154,17 @@ function log(mmsg) {
   } else {
     debug && log("--enrichModuleEnv argument is not defined");
   }
+
+  // handle --enrichModule "enrich.cjs"
+  if (values.enrichModule) {
+    debug && log(`--enrichModule argument given >${values.enrichModule}<`);
+
+    enrichModule = values.enrichModule;
+  } else {
+    debug && log("--enrichModule argument is not defined");
+  }
+
+  debug && log(`final enrichModule is >${enrichModule}<`);
 
   // use mask to extract subset of env vars
   let envVarFiltered = pickEnvironmentVariables(mask, /** @type {Record<string, string>}*/ (process.env));

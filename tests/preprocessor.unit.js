@@ -310,6 +310,23 @@ abc  : 'd'`,
     //   expect(result).toContain("    - /path/to/file2.js");
     });
     
+    it("should show 'none' when files array is empty", () => {
+      // Arrange
+      const envVarFiltered = {
+        TEST_VAR: "test_value"
+      };
+      const files = [];
+      const packageJson = require("../package.json");
+      
+      // Act
+      const result = debugString(envVarFiltered, files);
+      
+      // Assert
+      expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
+      expect(result).toContain("Generated files:");
+      expect(result).toContain("    none");
+    });
+    
     it("should throw error if envVarFiltered is not an object", () => {
       // Arrange
       const envVarFiltered = "not an object";
@@ -329,17 +346,6 @@ abc  : 'd'`,
       // Act & Assert
       expect(() => debugString(envVarFiltered, files)).toThrow(
         "preprocessor.js error: debugString: files should be an array"
-      );
-    });
-    
-    it("should throw error if files array is empty", () => {
-      // Arrange
-      const envVarFiltered = { TEST_VAR: "test_value" };
-      const files = [];
-      
-      // Act & Assert
-      expect(() => debugString(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugString: files should contain at least one file"
       );
     });
   });
