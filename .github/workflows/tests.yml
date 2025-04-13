@@ -93,6 +93,9 @@ jobs:
           set -o pipefail
           cat coverage/for-coverage-badge.log | node bash/node/coverage-badge.js --output coverage/coverage-badge.svg
 
+      - name: use cli
+        run: TEST_ONE="one" TEST_TWO="two" node src/cli.js --mask '^TEST_' examples/preprocessed.js --debug
+
       - name: Clean before artifact
         if: matrix.version == 22
         run: /bin/bash .github/clean_before_github_pages.sh

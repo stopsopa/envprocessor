@@ -22,7 +22,8 @@ node node_modules/envprocessor/src/cli.js --mask "^TERM_" --debug --verbose
 
 # examples from js module
 
-visit: [examples](examples)
+- [examples](examples) directory
+- web example [envprocessor/examples/index.html](envprocessor/examples/index.html)
 
 # using from project
 
@@ -38,11 +39,11 @@ then use env vars in browser using:
 
 ```js
 
-# ESM
+// ESM
 import { get } from "envprocessor/env";
 
 // CJS
-const {get} = require("envprocessor/env");
+const { get } = require("envprocessor/env");
 
 console.log(`get('USER') >${get("USER")}`);
 
