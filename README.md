@@ -12,6 +12,8 @@ yarn add envprocessor
 
 ```bash
 
+npx envprocessor
+
 node node_modules/envprocessor/src/cli.js --help
 
 node node_modules/envprocessor/src/cli.js --mask "^TERM_" --debug --verbose
