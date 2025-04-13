@@ -8,6 +8,7 @@ const {
   getIntegerDefault,
   getIntegerThrow,
   getThrow,
+  all,
 } = require("../src/env.js");
 
 try {
@@ -95,4 +96,17 @@ test("getIntegerThrow", async () => {
     throw: "env.js: env var GHI is not defined or is not a number",
     throw2: "env.js: env var ZZZ is not a number. value >not a number<, doesn't match regex >/^-?\\d+$/<",
   });
+});
+
+it("all - returns all environment variables", async () => {
+  const mockEnvironment = {
+    ABC: "DEF",
+    XYZ: "123",
+    TEST: "value"
+  };
+  
+  mockEnv(mockEnvironment);
+
+  expect(all()).toEqual(mockEnvironment);
+  expect(all()).toBe(mockEnvironment); // Check that it returns the same object reference
 });

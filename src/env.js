@@ -27,6 +27,13 @@ function mockEnv(map) {
   env = map;
 }
 
+/** 
+ * @returns {Record<string, string>}
+ */
+function all() {
+  return env;
+}
+
 /**
  * @param {string} key
  * @returns {boolean}
@@ -136,6 +143,7 @@ function getIntegerThrow(key) {
 }
 
 module.exports = {
+  all,
   mockEnv,
   has,
   get,
