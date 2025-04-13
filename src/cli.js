@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * node src/cli.js --mask "/^TERM_.*<dollar>/gi" var/preprocessed.js var/deep/directory/preprocessed.js --verbose --debug
  *
