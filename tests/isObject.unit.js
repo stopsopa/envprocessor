@@ -23,7 +23,7 @@
 // ✓ lodash.isObject - new Error()                                           -> false -> true
 
 // Cu -> custom
-const isObjectCu = require("envprocessor/isObject.js");
+const isObjectCu = require("../src/isObject.js");
 
 const isObjectLo = () => {};
 function expelo() {

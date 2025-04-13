@@ -14,8 +14,8 @@
   },
   "exports": {
     "./*.js": {
-      "types": "./src/*.d.ts",
-      "default": "./src/*.js"
+      "default": "./src/*.mjs",
+      "require":  "./src/*.js"
     }
   }
 }
