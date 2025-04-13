@@ -83,6 +83,23 @@ function log(mmsg) {
 }
 
 (async function () {
+  if (values.help) {
+    console.log(`
+
+    Usage: node src/cli.js [options] [output files...]
+    Options:
+      --help              Show help
+      --mask <pattern>    Specify a regex pattern to match environment variables 
+      --maskEnv <var>     Specify an environment variable containing a regex pattern
+      --enrichModule <module>  Specify a module to enrich the environment variables
+      --enrichModuleEnv <var>  Specify an environment variable containing the enrich module path
+      --debug             Enable debug mode (off by default)
+      --verbose           Enable verbose mode (off by default)
+    `);
+
+    return;
+  }
+
   const debug = values.debug;
   debug && log(`--debug mode is ${debug ? "enabled" : "disabled"}`);
 
@@ -118,7 +135,9 @@ function log(mmsg) {
   // don't throw in debug mode
   if (!debug) {
     if (!Array.isArray(positionals) || positionals.length === 0) {
-      throw th(`at least one positionals argument must be defined to specify output file(s)`);
+      throw th(
+        `at least one positionals argument must be defined to specify output file(s). Or specify --debug to skip this check for now to test rest of the configuration`,
+      );
     }
   }
   const files = positionals;
@@ -172,13 +191,24 @@ function log(mmsg) {
   if (enrichModule) {
     const enrichPath = path.resolve(process.cwd(), enrichModule);
 
-    const enrich = require(enrichPath);
+    debug && log(`loading enrichModule from path >${enrichPath}<`);
 
-    if (typeof enrich !== "function") {
-      throw th(`enrichModule >${enrichModule}< is not a function`);
+    try {
+      // Use dynamic import which works for both ESM and CommonJS modules
+      const enrichImport = await import(enrichPath);
+      // Get the default export (for ESM) or the module itself (for CommonJS)
+      const enrich = enrichImport.default || enrichImport;
+
+      if (typeof enrich !== "function") {
+        throw th(`enrichModule >${enrichModule}< is not a function`);
+      }
+
+      envVarFiltered = await enrich(envVarFiltered);
+    } catch (error) {
+      const typedError = error instanceof Error ? error : new Error(String(error));
+
+      throw th(`Failed to load or execute enrichModule: ${typedError.message}`);
     }
-
-    envVarFiltered = await enrich(envVarFiltered);
   }
 
   const content = produceFileContent(envVarFiltered);

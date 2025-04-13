@@ -6,6 +6,7 @@
     "noEmit": true,
     "moduleResolution": "node",
     "target": "es6",
+    "module": "es2020",
     "resolveJsonModule": true // Add this line
   },
   "include": ["src/**/*.js"],
