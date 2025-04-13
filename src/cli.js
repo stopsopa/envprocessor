@@ -43,6 +43,10 @@ const { values, positionals } = parseArgs({
       type: "boolean",
       default: false,
     },
+    dryrun: {
+      type: "boolean",
+      default: false,
+    },
     verboseEnv: {
       type: "string",
     },
@@ -88,13 +92,14 @@ function log(mmsg) {
 
     Usage: node src/cli.js [options] [output files...]
     Options:
-      --help              Show help
-      --mask <pattern>    Specify a regex pattern to match environment variables 
-      --maskEnv <var>     Specify an environment variable containing a regex pattern
-      --enrichModule <module>  Specify a module to enrich the environment variables
-      --enrichModuleEnv <var>  Specify an environment variable containing the enrich module path
-      --debug             Enable debug mode (off by default)
-      --verbose           Enable verbose mode (off by default)
+      --help                    Show help
+      --mask <pattern>          Specify a regex pattern to match environment variables 
+      --maskEnv <var>           Specify an environment variable containing a regex pattern
+      --enrichModule <module>   Specify a module to enrich the environment variables
+      --enrichModuleEnv <var>   Specify an environment variable containing the enrich module path
+      --dryrun                  Dry run mode
+      --debug                   Enable debug mode
+      --verbose                 Enable verbose mode
     `);
 
     return;
@@ -158,6 +163,10 @@ function log(mmsg) {
   verbose = values.verbose;
   debug && log(`final --verbose mode is ${verbose ? "enabled" : "disabled"}`);
 
+  // handle --dryrun
+  const dryrun = values.dryrun;
+  debug && log(`final --dryrun mode is ${dryrun ? "enabled" : "disabled"}`);
+
   let enrichModule = null;
 
   // handle --enrichModuleEnv "ENVPROCESSOR_ENRICH_MODULE"
@@ -214,8 +223,8 @@ function log(mmsg) {
   const content = produceFileContent(envVarFiltered);
 
   files.forEach((file) => {
-    if (debug) {
-      log(`saving file >${file}< - skipped due to --debug mode`);
+    if (dryrun) {
+      log(`saving file >${file}< - skipped due to --dryrun mode`);
     } else {
       // use saveToFile to save the file
       saveToFile(file, content);
@@ -227,6 +236,6 @@ function log(mmsg) {
   }
 
   if (debug) {
-    console.log(`final processed.js file: >${content}<`);
+    console.log(`final processed.js file content: >${content}<`);
   }
 })();

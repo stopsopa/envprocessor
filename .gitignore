@@ -10,4 +10,4 @@ yarn-error*
 .DS_Store
 *.tgz
 yarn.lock
-src/env.mjs
+examples/preprocessed.js

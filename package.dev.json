@@ -19,9 +19,11 @@
     "@types/detect-node": "^2.0.2",
     "@types/node": "^22.14.1",
     "esbuild": "^0.25.2",
+    "express": "^5.1.0",
     "jest": "^29.7.0",
     "mkdirp": "^3.0.1",
     "prettier": "^3.5.3",
+    "serve-index": "^1.9.1",
     "typescript": "^5.8.3"
   }
 }

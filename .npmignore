@@ -40,3 +40,5 @@ index.html
 /examples/
 /tests/generate.js
 tsconfig.json
+server.js
+examples/preprocessed.js

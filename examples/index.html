@@ -13,19 +13,26 @@
     HOST="0.0.0.0" PORT="8433" node server.js
 
     </pre>
-    <script src="var/preprocessed.js"></script>
+    <script src="preprocessed.js"></script>
     <script type="importmap">
       {
         "imports": {
-          "env": "/node_modules/envprocessor/src/env.mjs"
+          "env": "/src/env.mjs"
         }
       }
     </script>
     <script type="module">
-      import env from "env";
-
-      const { mockEnv, all, has, get, getDefault, getThrow, getIntegerThrowInvalid, getIntegerDefault, getIntegerThrow } =
-        env;
+      import {
+        mockEnv,
+        all,
+        has,
+        get,
+        getDefault,
+        getThrow,
+        getIntegerThrowInvalid,
+        getIntegerDefault,
+        getIntegerThrow,
+      } from "env";
 
       const pre = document.querySelector("pre");
 
@@ -33,9 +40,8 @@
 
       pre.innerHTML += `
 
-    COMMON_TEST: ${get("COMMON_TEST")}
-    TERM_PROGRAM: ${get("TERM_PROGRAM")}
-    TERM_PROGRAM_VERSION: ${get("TERM_PROGRAM_VERSION")}
+    TEST_ONE: ${get("TEST_ONE")}
+    TEST_TWO: ${get("TEST_TWO")}
 
     all: ${JSON.stringify(all(), null, 4)}
 
