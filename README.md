@@ -23,7 +23,7 @@ node node_modules/envprocessor/src/cli.js --mask "^TERM_" --debug --verbose
 # examples from js module
 
 - [examples](examples) directory
-- web example [envprocessor/examples/index.html](envprocessor/examples/index.html)
+- web example [/envprocessor/examples/index.html](/envprocessor/examples/index.html)
 
 # using from project
 
