@@ -72,10 +72,10 @@ const { values, positionals } = parseArgs({
   allowNegative: true,
 });
 
-
 if (
   values.help === true ||
-  (values.debug === false &&
+  (Object.keys(values).length < 5 &&
+    values.debug === false &&
     values.verbose === false &&
     values.dryrun === false &&
     Array.isArray(positionals) &&
