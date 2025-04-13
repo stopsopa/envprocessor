@@ -72,6 +72,32 @@ const { values, positionals } = parseArgs({
   allowNegative: true,
 });
 
+
+if (
+  values.help === true ||
+  (values.debug === false &&
+    values.verbose === false &&
+    values.dryrun === false &&
+    Array.isArray(positionals) &&
+    positionals.length === 0)
+) {
+  console.log(`
+
+  Usage: node src/cli.js [options] [output files...]
+  Options:
+    --mask <pattern>          Specify a regex pattern to match environment variables 
+    --maskEnv <var>           Specify an environment variable containing a regex pattern
+    --enrichModule <module>   Specify a module to enrich the environment variables
+    --enrichModuleEnv <var>   Specify an environment variable containing the enrich module path
+    --dryrun                  Dry run mode
+    --debug                   Enable debug mode
+    --verbose                 Enable verbose mode
+    --help                    Show help
+  `);
+
+  process.exit(0);
+}
+
 /**
  * @param {string} msg
  * @returns {string}
@@ -88,24 +114,6 @@ function log(mmsg) {
 }
 
 (async function () {
-  if (values.help) {
-    console.log(`
-
-    Usage: node src/cli.js [options] [output files...]
-    Options:
-      --help                    Show help
-      --mask <pattern>          Specify a regex pattern to match environment variables 
-      --maskEnv <var>           Specify an environment variable containing a regex pattern
-      --enrichModule <module>   Specify a module to enrich the environment variables
-      --enrichModuleEnv <var>   Specify an environment variable containing the enrich module path
-      --dryrun                  Dry run mode
-      --debug                   Enable debug mode
-      --verbose                 Enable verbose mode
-    `);
-
-    return;
-  }
-
   const debug = values.debug;
   debug && log(`--debug mode is ${debug ? "enabled" : "disabled"}`);
 
