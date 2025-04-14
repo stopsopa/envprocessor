@@ -27,7 +27,7 @@ export function mockEnv(map) {
   env = map;
 }
 
-/**
+/** 
  * @returns {Record<string, string>}
  */
 export function all() {
@@ -141,3 +141,15 @@ export function getIntegerThrow(key) {
 
   throw th(`env var ${key} is not defined or is not a number`);
 }
+
+// module.exports = {
+//   all,
+//   mockEnv,
+//   has,
+//   get,
+//   getDefault,
+//   getThrow,
+//   getIntegerThrowInvalid,
+//   getIntegerDefault,
+//   getIntegerThrow,
+// };

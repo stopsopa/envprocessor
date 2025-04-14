@@ -1,18 +1,20 @@
-const path = require("path");
+import path from "path";
 
-const fs = require("fs");
+import fs from "fs";
 
-const stringToRegex = require("./stringToRegex.js");
+import stringToRegex from "./stringToRegex.js";
 
-const isObject = require("./isObject.js");
+import isObject from "./isObject.js";
 
-const { mkdirp } = require("mkdirp");
+import { mkdirp } from "mkdirp";
+
+import packageJson from "../package.json" with { type: "json" };
 
 /**
  * @param {string} msg
  * @returns {Error}
  */
-function th(msg) {
+export function th(msg) {
   return new Error(`preprocessor.js error: ${msg}`);
 }
 
@@ -26,7 +28,7 @@ function th(msg) {
  * @param {number} [indentExceptFirstLine]
  * @returns {string}
  */
-function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLine = 2) {
+export function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLine = 2) {
   if (Object.keys(object).length === 0) {
     return "{}";
   }
@@ -50,7 +52,7 @@ function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLi
  * @param {Record<string, any>} obj
  * @returns {number}
  */
-function findWidestKeyLen(obj) {
+export function findWidestKeyLen(obj) {
   return Object.keys(obj).reduce((acc, key) => {
     const l = key.length;
 
@@ -68,7 +70,7 @@ function findWidestKeyLen(obj) {
  * @param {number} [indent]
  * @returns {string}
  */
-function presentExtractedVariables(obj, indent = 2) {
+export function presentExtractedVariables(obj, indent = 2) {
   const max = findWidestKeyLen(obj) + 1;
 
   /**
@@ -95,7 +97,7 @@ function presentExtractedVariables(obj, indent = 2) {
  * @param {function(Record<string, string>): string} [template]
  * @returns {string}
  */
-function produceFileContent(
+export function produceFileContent(
   obj,
   template = function (obj) {
     return `window.process = {
@@ -113,7 +115,7 @@ function produceFileContent(
  * @param {string} content - Content to write to the file
  * @returns {void}
  */
-function saveToFile(file, content) {
+export function saveToFile(file, content) {
   if (typeof content !== "string") {
     throw th("saveToFile: content should be a string");
   }
@@ -136,7 +138,7 @@ function saveToFile(file, content) {
  * @param {string|RegExp} mask
  * @returns {RegExp}
  */
-function produceRegex(mask) {
+export function produceRegex(mask) {
   /**
    * @type {RegExp}
    */
@@ -161,7 +163,7 @@ function produceRegex(mask) {
  * @param {Record<string, string>} obj - Usually you will pass process.env here
  * @returns {Record<string, string>}
  */
-function pickEnvironmentVariables(mask, obj) {
+export function pickEnvironmentVariables(mask, obj) {
   const reg = produceRegex(mask);
 
   return Object.keys(obj).reduce(
@@ -181,13 +183,11 @@ function pickEnvironmentVariables(mask, obj) {
   );
 }
 
-const packageJson = require("../package.json");
-
 /**
  * Returns the credit string with package name and version
  * @returns {string}
  */
-function getCredit() {
+export function getCredit() {
   return `${packageJson.name} v${packageJson.version}`;
 }
 
@@ -197,7 +197,7 @@ function getCredit() {
  * @param {string[]} files
  * @returns {string}
  */
-function debugString(envVarFiltered, files) {
+export function debugString(envVarFiltered, files) {
   if (!isObject(envVarFiltered)) {
     throw th("debugString: envVarFiltered should be an object");
   }
@@ -206,7 +206,7 @@ function debugString(envVarFiltered, files) {
     throw th("debugString: files should be an array");
   }
 
-  const list = files.length > 0 ? files.map((file) => `    - ${file}`).join("\n") : "    none"
+  const list = files.length > 0 ? files.map((file) => `    - ${file}`).join("\n") : "    none";
 
   return `
 ${getCredit()}
@@ -227,7 +227,7 @@ ${list}
  * @param {string[]} files
  * @returns {Record<string, unknown>}
  */
-function debugJson(envVarFiltered, files) {
+export function debugJson(envVarFiltered, files) {
   if (!isObject(envVarFiltered)) {
     throw th("debugJson: envVarFiltered should be an object");
   }
@@ -246,17 +246,3 @@ function debugJson(envVarFiltered, files) {
     files,
   };
 }
-
-module.exports = {
-  serializeInPrettierCompatibleWay,
-  produceRegex,
-  presentExtractedVariables,
-  pickEnvironmentVariables,
-  produceFileContent,
-  saveToFile,
-  findWidestKeyLen,
-  getCredit,
-  debugString,
-  debugJson,
-  th,
-};

@@ -147,5 +147,4 @@ var template = (function (t, delimiters) {
   // escape: /<#-([\s\S]+?)#>/g,
 });
 
-//export default template;
-module.exports = template;
+export default template;

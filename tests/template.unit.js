@@ -1,4 +1,4 @@
-const template = require("../src/template.js");
+const templatePromise = import("../src/template.js");
 
 const html = `
 <body>    
@@ -12,8 +12,10 @@ const html = `
 `;
 
 describe("template.js main nlab", () => {
-  it("html", (done) => {
-    const tmp = template(html);
+  it("html", async () => {
+    const template = await templatePromise;
+
+    const tmp = template.default(html);
 
     const generated = tmp({ tests_list_paths: ["one.js", "two.js"] });
 
@@ -34,7 +36,5 @@ describe("template.js main nlab", () => {
 
     expect(generated).toEqual(expected);
     // expect(generated).toMatchSnapshot(expected);
-
-    done();
   });
 });

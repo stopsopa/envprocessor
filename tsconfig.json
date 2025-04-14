@@ -4,11 +4,13 @@
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "target": "es6",
-    "module": "es2020",
+    "module": "nodenext",
+    "allowSyntheticDefaultImports": true, // import path from 'path';
+    "esModuleInterop": true,
     "resolveJsonModule": true // Add this line
   },
-  "include": ["src/**/*.js"],
+  "include": ["src/**/*.js", "src/**/*.cjs"],
   "exclude": ["examples/preprocessorMiddleware.js"] // Add this line
 }

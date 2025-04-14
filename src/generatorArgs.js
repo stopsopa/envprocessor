@@ -1,9 +1,10 @@
-const { parseArgs } = require("node:util");
+import { parseArgs } from "node:util";
 
 const { values, positionals } = parseArgs({
   args: process.argv.slice(3),
   options: {
-    help: {
+    mc: {
+      // more control
       type: "boolean",
       default: false,
     },
@@ -44,13 +45,13 @@ const { values, positionals } = parseArgs({
 });
 
 /**
- * This file exists mainly to generate this set of types 
+ * This file exists mainly to generate this set of types
  * and to make it available for use in generator.js
  */
 /** @typedef {typeof values} Values */
 /** @typedef {typeof positionals} Positionals */
 
-module.exports = {
+export default {
   values,
   positionals,
 };

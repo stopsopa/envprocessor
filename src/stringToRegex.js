@@ -25,4 +25,4 @@ const stringToRegex = (function () {
   };
 })();
 
-module.exports = stringToRegex;
+export default stringToRegex;
