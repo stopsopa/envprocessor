@@ -4,9 +4,7 @@
  * @returns {string[]}
  */
 function generator(values, positionals) {
-
-    return `
-    ``
+  return [];
 }
 
 module.exports = generator;
