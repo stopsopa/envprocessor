@@ -40,10 +40,10 @@ then use env vars in browser using:
 ```js
 
 // ESM
-import { get } from "envprocessor/env";
+import { get } from "envprocessor";
 
 // CJS
-const { get } = require("envprocessor/env");
+const { get } = require("envprocessor");
 
 console.log(`get('USER') >${get("USER")}`);
 

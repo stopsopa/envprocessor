@@ -20,6 +20,20 @@ const { parseArgs } = require("node:util");
 
 const { getThrow, has } = require("./env.js");
 
+if (process.argv[2] === "gen") {
+  const { values: generatorValues, positionals: generatorPositionals } = require("./generatorArgs.js");
+
+  const generator = require("./generator.js");
+
+  generator(generatorValues, generatorPositionals);
+
+  for (const file of generatorPositionals) {
+    console.log(`generated file: ${file}`);
+  }
+
+  process.exit(0);
+}
+
 const {
   saveToFile,
   produceRegex,
