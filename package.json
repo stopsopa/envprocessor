@@ -4,6 +4,7 @@
   "author": "Szymon Działowski",
   "description": "",
   "license": "MIT",
+  "main": "./src/env.js",
   "bin": {
     "envprocessor": "./src/cli.js"
   },
