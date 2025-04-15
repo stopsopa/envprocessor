@@ -1,9 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`preprocessor > debugString > should format debug information correctly 1`] = `
-"
-  Browser exposed environment variables:
-  
+"  
     TEST_VAR    : 'test_value'
     ANOTHER_VAR : 'another_value'
 

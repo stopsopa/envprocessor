@@ -209,8 +209,6 @@ export function debugString(envVarFiltered, files) {
   const list = files.length > 0 ? files.map((file) => `    - ${file}`).join("\n") : "    none";
 
   return `
-${getCredit()}
-
   Browser exposed environment variables:
   
 ${presentExtractedVariables(envVarFiltered, 4)}

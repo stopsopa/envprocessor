@@ -31,6 +31,7 @@ import {
   pickEnvironmentVariables,
   produceFileContent,
   debugString,
+  getCredit,
   th,
 } from "./preprocessor.js";
 
@@ -98,6 +99,7 @@ import {
       positionals.length === 0)
   ) {
     console.log(`
+${getCredit()}      
 
   Usage: node src/cli.js [options] [output files...]
   Options:
@@ -226,26 +228,22 @@ import {
 
     debug && log(`loading enrichModule from path >${enrichPath}<`);
 
-    const loadAndEnrich = async () => {
-      try {
-        // Use dynamic import which works for both ESM and CommonJS modules
-        const enrichImport = await import(enrichPath);
-        // Get the default export (for ESM) or the module itself (for CommonJS)
-        const enrich = enrichImport.default || enrichImport;
+    try {
+      // Use dynamic import which works for both ESM and CommonJS modules
+      const enrichImport = await import(enrichPath);
+      // Get the default export (for ESM) or the module itself (for CommonJS)
+      const enrich = enrichImport.default || enrichImport;
 
-        if (typeof enrich !== "function") {
-          throw th(`enrichModule >${enrichModule}< is not a function`);
-        }
-
-        envVarFiltered = await enrich(envVarFiltered);
-      } catch (error) {
-        const typedError = error instanceof Error ? error : new Error(String(error));
-
-        throw th(`Failed to load or execute enrichModule: ${typedError.message}`);
+      if (typeof enrich !== "function") {
+        throw th(`enrichModule >${enrichModule}< is not a function`);
       }
-    };
 
-    await loadAndEnrich();
+      envVarFiltered = await enrich(envVarFiltered);
+    } catch (error) {
+      const typedError = error instanceof Error ? error : new Error(String(error));
+
+      throw th(`Failed to load or execute enrichModule: ${typedError.message}`);
+    }
   }
 
   const content = produceFileContent(envVarFiltered);

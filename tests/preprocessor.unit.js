@@ -301,15 +301,11 @@ abc  : 'd'`,
         ANOTHER_VAR: "another_value",
       };
       const files = ["/path/to/file1.js", "/path/to/file2.js"];
-      const packageJson = require("../package.json");
 
       // Act
       const result = debugString(envVarFiltered, files);
 
-      //   console.log(`>${result}<`)
-
       // Assert
-      expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
       const toArray = result.split("\n");
       toArray.shift();
       toArray.shift();
@@ -334,7 +330,6 @@ abc  : 'd'`,
       const result = debugString(envVarFiltered, files);
 
       // Assert
-      expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
       expect(result).toContain("Generated files:");
       expect(result).toContain("    none");
     });
