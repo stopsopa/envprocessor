@@ -1,4 +1,4 @@
-const { getThrow } = require("envprocessor/env.js");
+const { getThrow } = require("envprocessor");
 
 const { pickEnvironmentVariables, produceFileContent } = require("envprocessor/preprocessor.js");
 
