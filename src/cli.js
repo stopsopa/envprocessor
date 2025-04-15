@@ -170,6 +170,7 @@ if (!debug) {
     );
   }
 }
+
 const files = positionals;
 
 let verbose;
@@ -184,6 +185,7 @@ if (values.verboseEnv) {
 } else {
   debug && log("--verboseEnv argument is not defined");
 }
+
 // handle --verbose
 verbose = values.verbose;
 debug && log(`final --verbose mode is ${verbose ? "enabled" : "disabled"}`);

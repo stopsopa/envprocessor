@@ -5,7 +5,7 @@
     "checkJs": true,
     "noEmit": true,
     "moduleResolution": "nodenext",
-    "target": "es6",
+    "target": "ESNext",
     "module": "nodenext",
     "allowSyntheticDefaultImports": true, // import path from 'path';
     "esModuleInterop": true,
