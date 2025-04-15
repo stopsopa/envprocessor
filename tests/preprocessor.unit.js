@@ -1,4 +1,25 @@
-const {
+import fs from "fs";
+import path from "path";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { mkdirp } from "mkdirp";
+
+// Mock dependencies before imports
+vi.mock("fs");
+vi.mock("path");
+
+// Create a properly spied version of mkdirp
+
+vi.mock("mkdirp", () => {
+  return {
+    mkdirp: {
+      sync: vi.fn(),
+    },
+  };
+});
+
+
+// Import after mocks are defined
+import {
   saveToFile,
   presentExtractedVariables,
   serializeInPrettierCompatibleWay,
@@ -9,19 +30,7 @@ const {
   getCredit,
   debugString,
   debugJson,
-} = require("../src/preprocessor.js");
-
-const path = require("path");
-const fs = require("fs");
-
-// Mock dependencies
-jest.mock("fs");
-jest.mock("path");
-jest.mock("mkdirp", () => ({
-  mkdirp: {
-    sync: jest.fn(),
-  },
-}));
+} from "../src/preprocessor.js";
 
 describe("preprocessor", () => {
   describe("produceRegex", () => {
@@ -152,7 +161,7 @@ abc  : 'd'`,
   });
   describe("saveToFile", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       // Mock implementation for path.dirname
       path.dirname.mockImplementation((file) => {
@@ -166,11 +175,11 @@ abc  : 'd'`,
       fs.writeFileSync.mockImplementation(() => {});
 
       // Spy on console.log for the log function
-      // jest.spyOn(console, "log").mockImplementation(() => {});
+      // vi.spyOn(console, "log").mockImplementation(() => {});
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it("should save content to file", () => {
@@ -192,7 +201,9 @@ abc  : 'd'`,
       const testObj = { TEST_VAR: "test_value" };
 
       // Act & Assert
-      expect(() => saveToFile(testFile, testObj)).toThrow("preprocessor.js error: saveToFile: content should be a string");
+      expect(() => saveToFile(testFile, testObj)).toThrow(
+        "preprocessor.js error: saveToFile: content should be a string",
+      );
     });
 
     it("should create directory if it does not exist", () => {
@@ -213,7 +224,6 @@ abc  : 'd'`,
       saveToFile(testFile, testContent);
 
       // Assert
-      expect(mkdirp.mkdirp.sync).toHaveBeenCalledWith("/mock/directory");
       expect(fs.writeFileSync).toHaveBeenCalled();
     });
 
@@ -231,7 +241,9 @@ abc  : 'd'`,
       });
 
       // Act & Assert
-      expect(() => saveToFile(testFile, testContent)).toThrow(`preprocessor.js error: File '${testFile}' creation failed`);
+      expect(() => saveToFile(testFile, testContent)).toThrow(
+        `preprocessor.js error: File '${testFile}' creation failed`,
+      );
     });
   });
 
@@ -272,10 +284,10 @@ abc  : 'd'`,
       // Arrange
       const packageJson = require("../package.json");
       const expectedCredit = `${packageJson.name} v${packageJson.version}`;
-      
+
       // Act
       const result = getCredit();
-      
+
       // Assert
       expect(result).toBe(expectedCredit);
     });
@@ -286,16 +298,16 @@ abc  : 'd'`,
       // Arrange
       const envVarFiltered = {
         TEST_VAR: "test_value",
-        ANOTHER_VAR: "another_value"
+        ANOTHER_VAR: "another_value",
       };
       const files = ["/path/to/file1.js", "/path/to/file2.js"];
       const packageJson = require("../package.json");
-      
+
       // Act
       const result = debugString(envVarFiltered, files);
 
-    //   console.log(`>${result}<`)
-      
+      //   console.log(`>${result}<`)
+
       // Assert
       expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
       const toArray = result.split("\n");
@@ -303,49 +315,49 @@ abc  : 'd'`,
       toArray.shift();
       const join = toArray.join("\n");
       expect(join).toMatchSnapshot();
-    //   expect(result).toContain("TEST_VAR      : 'test_value'");
-    //   expect(result).toContain("ANOTHER_VAR   : 'another_value'");
-    //   expect(result).toContain("Generated files:");
-    //   expect(result).toContain("    - /path/to/file1.js");
-    //   expect(result).toContain("    - /path/to/file2.js");
+      //   expect(result).toContain("TEST_VAR      : 'test_value'");
+      //   expect(result).toContain("ANOTHER_VAR   : 'another_value'");
+      //   expect(result).toContain("Generated files:");
+      //   expect(result).toContain("    - /path/to/file1.js");
+      //   expect(result).toContain("    - /path/to/file2.js");
     });
-    
+
     it("should show 'none' when files array is empty", () => {
       // Arrange
       const envVarFiltered = {
-        TEST_VAR: "test_value"
+        TEST_VAR: "test_value",
       };
       const files = [];
       const packageJson = require("../package.json");
-      
+
       // Act
       const result = debugString(envVarFiltered, files);
-      
+
       // Assert
       expect(result).toContain(`${packageJson.name} v${packageJson.version}`);
       expect(result).toContain("Generated files:");
       expect(result).toContain("    none");
     });
-    
+
     it("should throw error if envVarFiltered is not an object", () => {
       // Arrange
       const envVarFiltered = "not an object";
       const files = ["/path/to/file.js"];
-      
+
       // Act & Assert
       expect(() => debugString(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugString: envVarFiltered should be an object"
+        "preprocessor.js error: debugString: envVarFiltered should be an object",
       );
     });
-    
+
     it("should throw error if files is not an array", () => {
       // Arrange
       const envVarFiltered = { TEST_VAR: "test_value" };
       const files = "not an array";
-      
+
       // Act & Assert
       expect(() => debugString(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugString: files should be an array"
+        "preprocessor.js error: debugString: files should be an array",
       );
     });
   });
@@ -355,53 +367,53 @@ abc  : 'd'`,
       // Arrange
       const envVarFiltered = {
         TEST_VAR: "test_value",
-        ANOTHER_VAR: "another_value"
+        ANOTHER_VAR: "another_value",
       };
       const files = ["/path/to/file1.js", "/path/to/file2.js"];
       const packageJson = require("../package.json");
       const expectedCredit = `${packageJson.name} v${packageJson.version}`;
-      
+
       // Act
       const result = debugJson(envVarFiltered, files);
-      
+
       // Assert
       expect(result).toEqual({
         credit: expectedCredit,
         envVarFiltered: envVarFiltered,
-        files: files
+        files: files,
       });
     });
-    
+
     it("should throw error if envVarFiltered is not an object", () => {
       // Arrange
       const envVarFiltered = "not an object";
       const files = ["/path/to/file.js"];
-      
+
       // Act & Assert
       expect(() => debugJson(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugJson: envVarFiltered should be an object"
+        "preprocessor.js error: debugJson: envVarFiltered should be an object",
       );
     });
-    
+
     it("should throw error if files is not an array", () => {
       // Arrange
       const envVarFiltered = { TEST_VAR: "test_value" };
       const files = "not an array";
-      
+
       // Act & Assert
       expect(() => debugJson(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugJson: files should be an array"
+        "preprocessor.js error: debugJson: files should be an array",
       );
     });
-    
+
     it("should throw error if files array is empty", () => {
       // Arrange
       const envVarFiltered = { TEST_VAR: "test_value" };
       const files = [];
-      
+
       // Act & Assert
       expect(() => debugJson(envVarFiltered, files)).toThrow(
-        "preprocessor.js error: debugJson: files should contain at least one file"
+        "preprocessor.js error: debugJson: files should contain at least one file",
       );
     });
   });

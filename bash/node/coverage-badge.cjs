@@ -15,7 +15,7 @@
 
     then you generate svg badge file:
 
-    cat coverage/for-coverage-badge.log | node bash/node/coverage-badge.js --output coverage/coverage-badge.svg
+    cat coverage/for-coverage-badge.log | node bash/node/coverage-badge.cjs --output coverage/coverage-badge.svg
 
     and then you add badge to README.md:
 
@@ -42,7 +42,7 @@
 
 const fs = require("fs");
 
-const script = "coverage-badge.js";
+const script = "coverage-badge.cjs";
 
 const th = (msg) => new Error(`${script} error: ${msg}`);
 

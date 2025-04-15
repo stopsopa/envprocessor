@@ -1,6 +1,6 @@
 "use strict";
 
-const {
+import {
   mockEnv,
   get,
   getDefault,
@@ -9,7 +9,7 @@ const {
   getIntegerThrow,
   getThrow,
   all,
-} = require("../src/env.js");
+} from "../src/env.mjs";
 
 try {
   jest.setTimeout(100);
@@ -52,10 +52,10 @@ it("getIntegerThrowInvalid - ABC -> 123", async () => {
   expect(getIntegerThrowInvalid("ABC")).toEqual(123);
   expect(getIntegerThrowInvalid("GHI")).toEqual(undefined);
   expect(() => getIntegerThrowInvalid("ZZZ")).toThrowError(
-    "env.js: env var ZZZ is not a number. value >not a number<, doesn't match regex >/^-?\\d+$/<"
+    "env.js: env var ZZZ is not a number. value >not a number<, doesn't match regex >/^-?\\d+$/<",
   );
   expect(() => getIntegerThrowInvalid("BIG")).toThrowError(
-    "env.js: parseInt(90071992547409919007199254740991, 10) returned 9.007199254740992e+31, doesn't match regex >/^-?\\d+$/<"
+    "env.js: parseInt(90071992547409919007199254740991, 10) returned 9.007199254740992e+31, doesn't match regex >/^-?\\d+$/<",
   );
 });
 
@@ -102,9 +102,9 @@ it("all - returns all environment variables", async () => {
   const mockEnvironment = {
     ABC: "DEF",
     XYZ: "123",
-    TEST: "value"
+    TEST: "value",
   };
-  
+
   mockEnv(mockEnvironment);
 
   expect(all()).toEqual(mockEnvironment);

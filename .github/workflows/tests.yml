@@ -78,8 +78,8 @@ jobs:
           set -e
           set -o pipefail
           mkdir -p coverage
-          node node_modules/.bin/jest --roots tests --verbose --runInBand --modulePathIgnorePatterns tests/jest | tee coverage/for-coverage-badge.log
-          #/bin/bash jest.sh | tee coverage/for-coverage-badge.log
+          node node_modules/.bin/vitest --config vitest.config.ts --coverage run | tee var/for-coverage-badge.log
+          #/bin/bash jest.sh | tee var/for-coverage-badge.log
 
       # - name: JASMINE TESTS
       #   if: matrix.version == 22
@@ -91,7 +91,7 @@ jobs:
         run: |
           set -e
           set -o pipefail
-          cat coverage/for-coverage-badge.log | node bash/node/coverage-badge.js --output coverage/coverage-badge.svg
+          cat var/for-coverage-badge.log | node bash/node/coverage-badge.cjs --output var/coverage-badge.svg
 
       - name: use cli
         run: TEST_ONE="one" TEST_TWO="two" node src/cli.js --mask '^TEST_' examples/preprocessed.js --debug

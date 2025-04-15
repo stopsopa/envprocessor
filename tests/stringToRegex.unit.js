@@ -1,4 +1,5 @@
-const stringToRegex = require("../src/stringToRegex.js");
+// const stringToRegex = require("../src/stringToRegex.js");
+import stringToRegex from "../src/stringToRegex.js";
 
 function d(regex) {
   return {
@@ -12,183 +13,119 @@ function e(regex) {
   return expect(d(regex));
 }
 
-it("stringToRegex basic", (done) => {
-  try {
-    const r = stringToRegex("/abc/i");
+it("stringToRegex basic", async () => {
+  const r = stringToRegex("/abc/i");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "i",
-      source: "abc",
-      str: "/abc/i",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "i",
+    source: "abc",
+    str: "/abc/i",
+  });
 });
 
-it("stringToRegex slash", (done) => {
-  try {
-    const r = stringToRegex("/abc\\/abcf/i");
+it("stringToRegex slash", async () => {
+  const r = stringToRegex("/abc\\/abcf/i");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "i",
-      source: "abc\\/abcf",
-      str: "/abc\\/abcf/i",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "i",
+    source: "abc\\/abcf",
+    str: "/abc\\/abcf/i",
+  });
 });
 
-it("stringToRegex simple error", (done) => {
-  try {
-    const r = stringToRegex("/abc/def/i");
-
-    // console.log(JSON.stringify(d(r), null, 4));
-
-    done("error");
-  } catch (e) {
-    expect(String(e)).toEqual(
-      "Error: stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' should split to one or two segments",
-    );
-
-    done();
-  }
+it("stringToRegex simple error", async () => {
+  expect(() => stringToRegex("/abc/def/i")).toThrow(
+    "stringToRegex error: general error: string '/abc/def/i' error: Error: param '/abc/def/i' should split to one or two segments",
+  );
 });
 
-it("stringToRegex no flags", (done) => {
-  try {
-    const r = stringToRegex("/abc/");
+it("stringToRegex no flags", async () => {
+  const r = stringToRegex("/abc/");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "",
-      source: "abc",
-      str: "/abc/",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "",
+    source: "abc",
+    str: "/abc/",
+  });
 });
 
-it("stringToRegex just string", (done) => {
-  try {
-    const r = stringToRegex("abc");
+it("stringToRegex just string", async () => {
+  const r = stringToRegex("abc");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "",
-      source: "abc",
-      str: "/abc/",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "",
+    source: "abc",
+    str: "/abc/",
+  });
 });
 
-it("stringToRegex slash before", (done) => {
-  try {
-    const r = stringToRegex("/abc");
+it("stringToRegex slash before", async () => {
+  const r = stringToRegex("/abc");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "",
-      source: "abc",
-      str: "/abc/",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "",
+    source: "abc",
+    str: "/abc/",
+  });
 });
 
-it("stringToRegex slash after", (done) => {
-  try {
-    const r = stringToRegex("abc/");
+it("stringToRegex slash after", async () => {
+  const r = stringToRegex("abc/");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "",
-      source: "abc",
-      str: "/abc/",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "",
+    source: "abc",
+    str: "/abc/",
+  });
 });
 
-it("stringToRegex slash", (done) => {
-  try {
-    const r = stringToRegex("/\\/(CameraRoll|Screenshot|Videos)\\//");
-    // const r = stringToRegex('/[\\d+]abc/i');
+it("stringToRegex slash", async () => {
+  const r = stringToRegex("/\\/(CameraRoll|Screenshot|Videos)\\//");
+  // const r = stringToRegex('/[\\d+]abc/i');
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "",
-      source: "\\/(CameraRoll|Screenshot|Videos)\\/",
-      str: "/\\/(CameraRoll|Screenshot|Videos)\\//",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "",
+    source: "\\/(CameraRoll|Screenshot|Videos)\\/",
+    str: "/\\/(CameraRoll|Screenshot|Videos)\\//",
+  });
 });
 
-it("stringToRegex slash with flag", (done) => {
-  try {
-    const r = stringToRegex("/\\/(CameraRoll|Screenshot|Videos)\\//is");
-    // const r = stringToRegex('/[\\d+]abc/i');
+it("stringToRegex slash with flag", async () => {
+  const r = stringToRegex("/\\/(CameraRoll|Screenshot|Videos)\\//is");
+  // const r = stringToRegex('/[\\d+]abc/i');
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "is",
-      source: "\\/(CameraRoll|Screenshot|Videos)\\/",
-      str: "/\\/(CameraRoll|Screenshot|Videos)\\//is",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "is",
+    source: "\\/(CameraRoll|Screenshot|Videos)\\/",
+    str: "/\\/(CameraRoll|Screenshot|Videos)\\//is",
+  });
 });
 
-it("stringToRegex slash at the end", (done) => {
-  try {
-    // const r = stringToRegex('/\\/(CameraRoll|Screenshot|Videos)\\/');
-    const r = stringToRegex("/abc\\//i");
+it("stringToRegex slash at the end", async () => {
+  // const r = stringToRegex('/\\/(CameraRoll|Screenshot|Videos)\\/');
+  const r = stringToRegex("/abc\\//i");
 
-    // console.log(JSON.stringify(d(r), null, 4));
+  // console.log(JSON.stringify(d(r), null, 4));
 
-    e(r).toEqual({
-      flags: "i",
-      source: "abc\\/",
-      str: "/abc\\//i",
-    });
-
-    done();
-  } catch (e) {
-    done(String(e));
-  }
+  e(r).toEqual({
+    flags: "i",
+    source: "abc\\/",
+    str: "/abc\\//i",
+  });
 });

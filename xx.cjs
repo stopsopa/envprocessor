@@ -50,7 +50,7 @@ EEE
 
 cat <<EEE
 
-node node_modules/.bin/jest $@ --roots tests --verbose --runInBand --modulePathIgnorePatterns tests/jest
+node node_modules/.bin/vitest --config vitest.config.ts --coverage run
 
 EEE
 `,
