@@ -16,8 +16,8 @@ const str = fs.readFileSync(tmpFile, "utf8");
 const tmp = template(str);
 
 /**
- * @param {import('./generatorArgs.js').Values} values
- * @param {import('./generatorArgs.js').Positionals} positionals
+ * @param {import('./generatorArgs.js').GeneratorValues} values
+ * @param {import('./generatorArgs.js').GeneratorPositionals} positionals
  * @returns {import('./types.js').GeneratorType}
  */
 export default function generator(values, positionals) {

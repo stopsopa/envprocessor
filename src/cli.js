@@ -19,11 +19,11 @@ import path from "path";
 
 import { getThrow, has } from "./env.mjs";
 
-import { parseArgs } from "node:util";
-
-import generatorArgs from "./generatorArgs.js";
+import { options, values, positionals, getParseArgs } from "./generatorArgs.js";
 
 import generator from "./generator.js";
+
+import differenceDetected from "./differenceDetected.js";
 
 import {
   saveToFile,
@@ -36,67 +36,18 @@ import {
 } from "./preprocessor.js";
 
 if (process.argv[2] === "gen") {
-  generator(generatorArgs.values, generatorArgs.positionals);
+  const { values: generatorValues, positionals: generatorPositionals } = getParseArgs();
 
-  for (const file of generatorArgs.positionals) {
+  generator(generatorValues, generatorPositionals);
+
+  for (const file of generatorPositionals) {
     console.log(`generated file: ${file}`);
   }
 
   process.exit(0);
 }
 
-const { values, positionals } = parseArgs({
-  args: process.argv.slice(2),
-  options: {
-    help: {
-      type: "boolean",
-      default: false,
-    },
-    debug: {
-      type: "boolean",
-      default: false,
-    },
-    verbose: {
-      type: "boolean",
-      default: false,
-    },
-    dryrun: {
-      type: "boolean",
-      default: false,
-    },
-    verboseEnv: {
-      type: "string",
-    },
-
-    mask: {
-      type: "string",
-    },
-    maskEnv: {
-      type: "string",
-    },
-
-    enrichModule: {
-      type: "string",
-    },
-
-    enrichModuleEnv: {
-      type: "string",
-    },
-  },
-  strict: true,
-  allowPositionals: true,
-  allowNegative: true,
-});
-
-if (
-  values.help === true ||
-  (Object.keys(values).length < 5 &&
-    values.debug === false &&
-    values.verbose === false &&
-    values.dryrun === false &&
-    Array.isArray(positionals) &&
-    positionals.length === 0)
-) {
+if (differenceDetected(options, values)) {
   console.log(`
 ${getCredit()}      
 
