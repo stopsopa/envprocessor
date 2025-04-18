@@ -39,11 +39,7 @@
 //  ✓isObject - new Set()                                           -> false
 //  ✓isObject - new Error()                                         -> false
 
-/**
- * @param {any} o 
- * @returns {boolean} 
- */
-function isObject(o) {
+function isObject(o: any): boolean {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
 
