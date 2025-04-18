@@ -17,6 +17,6 @@
   "homepage": "https://github.com/stopsopa/envprocessor",
   "dependencies": {
     "@types/node": "^22.14.1",
-    "mkdirp": "^3.0.1",
+    "mkdirp": "^3.0.1"
   }
 }
