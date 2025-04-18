@@ -5,6 +5,7 @@ yarn-error*
 /local.txt
 /trash/
 /coverage/
+/dist/
 *.jasmine-esbuild.js
 /playwright-report/
 .DS_Store

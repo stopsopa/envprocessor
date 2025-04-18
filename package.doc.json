@@ -1,0 +1,28 @@
+{
+  // https://nodejs.org/api/packages.html#package-entry-points
+  // https://nodejs.org/api/packages.html#dual-commonjses-module-packages
+  // https://github.com/nodejs/package-examples
+  "name": "envprocessor",
+  "type": "module", // type: module = makes .js interpreted as ESM (explicit, modern)
+  "version": "0.0.1",
+  "author": "Szymon Działowski",
+  "description": "",
+  "license": "MIT",
+  "main": "./src/env.cjs", // cjs fallback - Node.js 10 and below
+  "module": "./src/env.mjs", // ESM entry (for bundlers)
+  "exports": {
+    // dual support
+    // esm - "exports" field takes precedence over "main"
+    ".": {
+      "import": "./dist/index.mjs", // esm
+      "require": "./dist/index.cjs" // cjs
+    }
+  },
+  "bin": {
+    "envprocessor": "./src/cli.js"
+  },
+  "homepage": "https://github.com/stopsopa/envprocessor",
+  "dependencies": {
+    "mkdirp": "^3.0.1"
+  }
+}
