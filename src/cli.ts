@@ -21,11 +21,8 @@ import { getThrow, has } from "./env.js";
 
 import {
   options,
-  OptionsType,
   values,
-  ValuesType,
   positionals,
-  PositionalsType,
   getParseArgs,
 } from "./generatorArgs.js";
 
@@ -46,7 +43,7 @@ import {
 if (process.argv[2] === "gen") {
   const { values: generatorValues, positionals: generatorPositionals } = getParseArgs();
 
-  generator(generatorValues, generatorPositionals);
+  generator<typeof generatorValues, typeof generatorPositionals>(generatorValues, generatorPositionals);
 
   for (const file of generatorPositionals) {
     console.log(`generated file: ${file}`);

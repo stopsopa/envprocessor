@@ -1,6 +1,5 @@
 import fs from "fs";
 
-// const path = require("path");
 import path from "path";
 
 import template from "./template.js";
@@ -15,12 +14,7 @@ const str = fs.readFileSync(tmpFile, "utf8");
 
 const tmp = template(str);
 
-/**
- * @param {import('./generatorArgs.js').GeneratorValues} values
- * @param {import('./generatorArgs.js').GeneratorPositionals} positionals
- * @returns {import('./types.js').GeneratorType}
- */
-export default function generator(values, positionals) {
+export default function generator<T, K>(values: T, positionals: K) {
   return {
     script: tmp({
       v: values,
