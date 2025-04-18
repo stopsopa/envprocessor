@@ -10,11 +10,7 @@ import { mkdirp } from "mkdirp";
 
 import packageJson from "../package.json" with { type: "json" };
 
-/**
- * @param {string} msg
- * @returns {Error}
- */
-export function th(msg) {
+export function th(msg: string): Error {
   return new Error(`preprocessor.js error: ${msg}`);
 }
 
@@ -23,12 +19,8 @@ export function th(msg) {
  * but indentExceptFirstLine is to add additional indentation to all lines except the first one.
  *
  * Needed for proper formatting of processed file for the browser.
- * @param {any} object
- * @param {string | number} [space]
- * @param {number} [indentExceptFirstLine]
- * @returns {string}
  */
-export function serializeInPrettierCompatibleWay(object, space = 2, indentExceptFirstLine = 2) {
+export function serializeInPrettierCompatibleWay(object: any, space = 2, indentExceptFirstLine = 2): string {
   if (Object.keys(object).length === 0) {
     return "{}";
   }
@@ -49,10 +41,8 @@ export function serializeInPrettierCompatibleWay(object, space = 2, indentExcept
 
 /**
  * Finds the length of the widest key in an object
- * @param {Record<string, any>} obj
- * @returns {number}
  */
-export function findWidestKeyLen(obj) {
+export function findWidestKeyLen(obj: Record<string, any>): number {
   return Object.keys(obj).reduce((acc, key) => {
     const l = key.length;
 
@@ -66,17 +56,11 @@ export function findWidestKeyLen(obj) {
 
 /**
  * Formats extracted environment variables for display
- * @param {Record<string, string>} obj
- * @param {number} [indent]
- * @returns {string}
  */
-export function presentExtractedVariables(obj, indent = 2) {
+export function presentExtractedVariables(obj: Record<string, any>, indent = 2): string {
   const max = findWidestKeyLen(obj) + 1;
 
-  /**
-   * @type {string[]}
-   */
-  let buffer = [];
+  let buffer: string[] = [];
 
   Object.keys(obj).map((key) => {
     const l = key.length;
@@ -93,29 +77,23 @@ export function presentExtractedVariables(obj, indent = 2) {
 
 /**
  * Produces file content with environment variables
- * @param {Record<string, string>} obj
- * @param {function(Record<string, string>): string} [template]
- * @returns {string}
  */
 export function produceFileContent(
-  obj,
-  template = function (obj) {
+  obj: Record<string, string>,
+  template: (obj: Record<string, string>) => string = function (obj) {
     return `window.process = {
   env: ${serializeInPrettierCompatibleWay(obj, 2, 2)}
 };
 `;
   },
-) {
+): string {
   return template(obj);
 }
 
 /**
  * Dumps given object to the file after processing with produceFileContent()
- * @param {string} file - Path to the file
- * @param {string} content - Content to write to the file
- * @returns {void}
  */
-export function saveToFile(file, content) {
+export function saveToFile(file: string, content: string): void {
   if (typeof content !== "string") {
     throw th("saveToFile: content should be a string");
   }
@@ -135,14 +113,9 @@ export function saveToFile(file, content) {
 
 /**
  * Doing what it can to convert mask to RegExp, if it is already a RegExp, it will be returned as is.
- * @param {string|RegExp} mask
- * @returns {RegExp}
  */
-export function produceRegex(mask) {
-  /**
-   * @type {RegExp}
-   */
-  let reg;
+export function produceRegex(mask: string | RegExp): RegExp {
+  let reg: RegExp;
 
   if (typeof mask === "string") {
     if (mask.includes("$")) {
@@ -163,15 +136,10 @@ export function produceRegex(mask) {
  * @param {Record<string, string>} obj - Usually you will pass process.env here
  * @returns {Record<string, string>}
  */
-export function pickEnvironmentVariables(mask, obj) {
+export function pickEnvironmentVariables(mask: string | RegExp, obj: Record<string, string>): Record<string, string> {
   const reg = produceRegex(mask);
 
-  return Object.keys(obj).reduce(
-    /**
-     * @param {Record<string, string>} acc - Accumulator object
-     * @param {string} key - Current key being processed
-     * @returns {Record<string, string>}
-     */
+  return (Object.keys(obj) as string[]).reduce(
     (acc, key) => {
       if (reg.test(key)) {
         acc[key] = obj[key];
@@ -179,7 +147,7 @@ export function pickEnvironmentVariables(mask, obj) {
 
       return acc;
     },
-    {},
+    {} as Record<string, string>,
   );
 }
 
@@ -193,11 +161,8 @@ export function getCredit() {
 
 /**
  * Creates a debug string with environment variables and generated files
- * @param {Record<string, string>} envVarFiltered
- * @param {string[]} files
- * @returns {string}
  */
-export function debugString(envVarFiltered, files) {
+export function debugString(envVarFiltered: Record<string, string>, files: string[]): string {
   if (!isObject(envVarFiltered)) {
     throw th("debugString: envVarFiltered should be an object");
   }
@@ -221,11 +186,8 @@ ${list}
 
 /**
  * Creates a debug string with environment variables and generated files
- * @param {Record<string, string>} envVarFiltered
- * @param {string[]} files
- * @returns {Record<string, unknown>}
  */
-export function debugJson(envVarFiltered, files) {
+export function debugJson(envVarFiltered: Record<string, string>, files: string[]): Record<string, unknown> {
   if (!isObject(envVarFiltered)) {
     throw th("debugJson: envVarFiltered should be an object");
   }
