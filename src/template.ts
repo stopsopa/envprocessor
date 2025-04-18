@@ -78,7 +78,7 @@ var template = (function (t, delimiters) {
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
   // and correctly escapes quotes within interpolated code.
   // NB: `oldSettings` only exists for backwards compatibility.
-  return function (text, settings, oldSettings) {
+  return function (text: string, settings?: any, oldSettings?: any) {
     if (!settings && oldSettings) settings = oldSettings;
     settings = defaults({}, settings, delimiters);
 
@@ -128,7 +128,7 @@ var template = (function (t, delimiters) {
       throw e;
     }
 
-    var template = function (data) {
+    var template = function (data): string {
       return render.call(this, data);
     };
 
