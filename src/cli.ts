@@ -66,18 +66,11 @@ ${getCredit()}
   process.exit(0);
 }
 
-/**
- * @param {string} msg
- * @returns {string}
- */
-function msg(msg) {
+function msg(msg: string): string {
   return `envprocessor debug: ${msg}`;
 }
-/**
- * @param {string} mmsg
- * @returns {void}
- */
-function log(mmsg) {
+
+function log(mmsg: string): void {
   console.log(msg(mmsg));
 }
 
@@ -173,7 +166,7 @@ if (values.enrichModule) {
 debug && log(`final enrichModule is >${enrichModule}<`);
 
 // use mask to extract subset of env vars
-let envVarFiltered = pickEnvironmentVariables(mask, /** @type {Record<string, string>}*/ (process.env));
+let envVarFiltered = pickEnvironmentVariables(mask, process.env as Record<string, string>);
 
 if (enrichModule) {
   const enrichPath = path.resolve(process.cwd(), enrichModule);
