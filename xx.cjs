@@ -37,8 +37,8 @@ EEE
 
 cat <<EEE
 
-node node_modules/.bin/tsc -p tsconfig.base.json --watch
-node node_modules/.bin/tsc -p tsconfig.base.json 
+node node_modules/.bin/tsc -p tsconfig.esm.json --noEmit --watch
+node node_modules/.bin/tsc -p tsconfig.esm.json --noEmit 
 
 EEE
 `,

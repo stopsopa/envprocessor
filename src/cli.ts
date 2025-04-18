@@ -17,7 +17,7 @@
 
 import path from "path";
 
-import { getThrow, has } from "./env.mjs";
+import { getThrow, has } from "./env.js";
 
 import { options, values, positionals, getParseArgs } from "./generatorArgs.js";
 
@@ -138,7 +138,7 @@ debug && log(`final --verbose mode is ${verbose ? "enabled" : "disabled"}`);
 const dryrun = values.dryrun;
 debug && log(`final --dryrun mode is ${dryrun ? "enabled" : "disabled"}`);
 
-let enrichModule = null;
+let enrichModule: string | null = null;
 
 // handle --enrichModuleEnv "ENVPROCESSOR_ENRICH_MODULE"
 if (values.enrichModuleEnv) {
