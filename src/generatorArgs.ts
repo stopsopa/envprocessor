@@ -14,9 +14,6 @@ export function getParseArgs() {
     allowNegative: true,
   });
 
-  /** @typedef {typeof values} GeneratorValues */
-  /** @typedef {typeof positionals} GeneratorPositionals */
-
   return { values, positionals };
 }
 
@@ -57,7 +54,7 @@ const options = {
   },
 };
 
-/** @typedef {typeof options} OptionsType */
+export type OptionsType = typeof options;
 
 const { values, positionals } = parseArgs({
   args: process.argv.slice(2),
@@ -105,7 +102,7 @@ const { values, positionals } = parseArgs({
   allowNegative: true,
 });
 
-/** @typedef {typeof values} Values */
-/** @typedef {typeof positionals} Positionals */
+export type ValuesType = typeof values;
+export type PositionalsType = typeof positionals;
 
 export { options, values, positionals };

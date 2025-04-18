@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json && /bin/bash .github/fix-cjs.sh",
+    "build:esm": "tsc -p tsconfig.json && /bin/bash .github/fix-cjs.sh",
     "build": "rm -rf dist && npm run build:cjs && npm run build:esm"
   },
   "homepage": "https://github.com/stopsopa/envprocessor",

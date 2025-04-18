@@ -19,7 +19,15 @@ import path from "path";
 
 import { getThrow, has } from "./env.js";
 
-import { options, values, positionals, getParseArgs } from "./generatorArgs.js";
+import {
+  options,
+  OptionsType,
+  values,
+  ValuesType,
+  positionals,
+  PositionalsType,
+  getParseArgs,
+} from "./generatorArgs.js";
 
 import generator from "./generator.js";
 
@@ -34,8 +42,6 @@ import {
   getCredit,
   th,
 } from "./preprocessor.js";
-
-type EnrichFunction = (envVars: Record<string, string>) => Promise<Record<string, string>> | Record<string, string>;
 
 if (process.argv[2] === "gen") {
   const { values: generatorValues, positionals: generatorPositionals } = getParseArgs();
@@ -179,7 +185,7 @@ if (enrichModule) {
     // Use dynamic import which works for both ESM and CommonJS modules
     const enrichImport = await import(enrichPath);
     // Get the default export (for ESM) or the module itself (for CommonJS)
-    const enrich = enrichImport.default || enrichImport as EnrichFunction;
+    const enrich = enrichImport.default || enrichImport;
 
     if (typeof enrich !== "function") {
       throw th(`enrichModule >${enrichModule}< is not a function`);
