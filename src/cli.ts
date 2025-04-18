@@ -35,6 +35,8 @@ import {
   th,
 } from "./preprocessor.js";
 
+type EnrichFunction = (envVars: Record<string, string>) => Promise<Record<string, string>> | Record<string, string>;
+
 if (process.argv[2] === "gen") {
   const { values: generatorValues, positionals: generatorPositionals } = getParseArgs();
 
@@ -77,7 +79,7 @@ function log(mmsg: string): void {
 const debug = values.debug;
 debug && log(`--debug mode is ${debug ? "enabled" : "disabled"}`);
 
-let mask;
+let mask: string | undefined;
 
 // handle --maskEnv "ENVPROCESSOR_EXPOSE_ENV_VARS"
 if (values.maskEnv) {
@@ -117,7 +119,7 @@ if (!debug) {
 
 const files = positionals;
 
-let verbose;
+let verbose: boolean | undefined;
 
 // handle --verboseEnv ""
 if (values.verboseEnv) {
@@ -177,7 +179,7 @@ if (enrichModule) {
     // Use dynamic import which works for both ESM and CommonJS modules
     const enrichImport = await import(enrichPath);
     // Get the default export (for ESM) or the module itself (for CommonJS)
-    const enrich = enrichImport.default || enrichImport;
+    const enrich = enrichImport.default || enrichImport as EnrichFunction;
 
     if (typeof enrich !== "function") {
       throw th(`enrichModule >${enrichModule}< is not a function`);
