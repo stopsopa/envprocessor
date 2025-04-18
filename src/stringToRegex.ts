@@ -1,16 +1,9 @@
 const stringToRegex = (function () {
-  /**
-   * @param {string} msg
-   * @returns {Error}
-   */
-  function th(msg) {
+  function th(msg: string): Error {
     return new Error("stringToRegex error: " + msg);
   }
 
-  /**
-   * @param {string} v
-   */
-  return (v) => {
+  return (v: string) => {
     try {
       const vv = v.match(/(\\.|[^/])+/g);
 
