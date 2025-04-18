@@ -4,11 +4,9 @@ import path from "path";
 
 import template from "./template.js";
 
-import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); // or use path.dirname('')
+const __dirname = path.resolve();
 
-const tmpFile = path.resolve(__dirname, "template.tmp");
+const tmpFile = path.resolve(__dirname, "src", "template.tmp");
 
 const str = fs.readFileSync(tmpFile, "utf8");
 

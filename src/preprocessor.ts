@@ -8,7 +8,8 @@ import isObject from "./isObject.js";
 
 import { mkdirp } from "mkdirp";
 
-import packageJson from "../package.json" with { type: "json" };
+// Read package.json directly instead of using import attributes
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
 
 export function th(msg: string): Error {
   return new Error(`preprocessor.js error: ${msg}`);
