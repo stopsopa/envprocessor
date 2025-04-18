@@ -32,15 +32,30 @@ EEE
       description: "Status of all things",
       confirm: false,
     },
+    [`build`]: {
+      command: `
+set -e
+cat <<EEE
+
+npm run build
+
+EEE
+read -p "\n      Press enter to continue\n"
+npm run build
+`,
+      description: `tsc`,
+      confirm: false,
+    },
     [`tsc`]: {
       command: `
-
+set -e
 cat <<EEE
 
 node node_modules/.bin/tsc -p tsconfig.json --noEmit --watch
 node node_modules/.bin/tsc -p tsconfig.json --noEmit 
 
 EEE
+node node_modules/.bin/tsc -p tsconfig.json --noEmit --watch
 `,
       description: `tsc`,
       confirm: false,
