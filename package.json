@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "./dist/esm/cli.js",
   "bin": {
-    "envprocessor": "./dist/cjs/cli.js"
+    "envprocessor": "./dist/esm/cli.js"
   },
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json",
