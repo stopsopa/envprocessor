@@ -93,8 +93,13 @@ jobs:
           set -o pipefail
           cat var/for-coverage-badge.log | node bash/node/coverage-badge.cjs --output var/coverage-badge.svg
 
-      # - name: use cli
-      #   run: TEST_ONE="one" TEST_TWO="two" node src/cli.js --mask '^TEST_' examples/preprocessed.js --debug
+      - name: build
+        run: npm run build
+
+      - name: use cli
+        run: |
+          TEST_ONE="one" TEST_TWO="two" node dist/cjs/cli.cjs --mask '^TEST_' examples/preprocessed.js --debug --verbose
+          TEST_ONE="one" TEST_TWO="two" node dist/esm/cli.js --mask '^TEST_' examples/preprocessed.js --debug --verbose
 
       - name: Clean before artifact
         if: matrix.version == 22
@@ -134,11 +139,11 @@ jobs:
         run: /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install semantic-release conventional-changelog-conventionalcommits
         # it has to be done here beacause otherwise it will crash for node@15 with error>>> error semantic-release@19.0.5: The engine "node" is incompatible with this module. Expected version ">=16 || ^14.17". Got "15.14.0"
 
-      - name: npm pack
-        run: npm pack
-
       - name: build
         run: npm run build
+
+      - name: npm pack
+        run: npm pack
 
       # https://github.com/semantic-release/semantic-release/blob/master/docs/recipes/ci-configurations/github-actions.md
       - name: Release
