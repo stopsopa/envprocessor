@@ -35,6 +35,10 @@ prettier.config.mjs
 .nvmrc
 /coverage/
 /docs/
+/src/
+package.doc.json
+package-lock.dev.json
+/override/
 pull-docker-image.sh
 index.html
 /server.cert

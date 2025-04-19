@@ -8,7 +8,7 @@ import { getRootDirname } from "./paths.js";
 
 const _root = getRootDirname();
 
-const _filename = path.resolve(_root, "..", "..", "src", "source", "template.tmp");
+const _filename = path.resolve(_root, "..", "..", "template.tmp");
 
 const str = fs.readFileSync(_filename, "utf8");
 
