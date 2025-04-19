@@ -8,9 +8,6 @@ import isObject from "./isObject.js";
 
 import { mkdirp } from "mkdirp";
 
-// Read package.json directly instead of using import attributes
-const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
-
 export function th(msg: string): Error {
   return new Error(`preprocessor.js error: ${msg}`);
 }
@@ -157,6 +154,8 @@ export function pickEnvironmentVariables(mask: string | RegExp, obj: Record<stri
  * @returns {string}
  */
 export function getCredit() {
+  const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
+
   return `${packageJson.name} v${packageJson.version}`;
 }
 

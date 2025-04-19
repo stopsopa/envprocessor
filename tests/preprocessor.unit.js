@@ -17,7 +17,6 @@ vi.mock("mkdirp", () => {
   };
 });
 
-
 // Import after mocks are defined
 import {
   saveToFile,
@@ -281,6 +280,10 @@ abc  : 'd'`,
 
   describe("getCredit", () => {
     it("should return package name and version in the expected format", () => {
+      vi.clearAllMocks();
+
+      fs.readFileSync.mockReturnValue(`{"name":"envprocessor", "version":"0.0.1"}`);
+
       // Arrange
       const packageJson = require("../package.json");
       const expectedCredit = `${packageJson.name} v${packageJson.version}`;
