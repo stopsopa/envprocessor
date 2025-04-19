@@ -13,6 +13,8 @@ node_modules
 /var/
 /bash/
 .env
+tsconfig.*
+vitest.config.ts
 prettier*
 package.dev.json
 testall.sh
