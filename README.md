@@ -6,6 +6,8 @@ npm install envprocessor
 
 yarn add envprocessor
 
+# first properly working version is 1.8.7
+
 ```
 
 # use from CLI
