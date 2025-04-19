@@ -9,6 +9,14 @@
   "bin": {
     "envprocessor": "./dist/esm/cli.js"
   },
+  "types": "./dist/types/*.d.ts",
+  "module": "./dist/cjs/env.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/env.js",
+      "require": "./dist/cjs/env.cjs"
+    }
+  },
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.json && /bin/bash .github/fix-cjs.sh",
