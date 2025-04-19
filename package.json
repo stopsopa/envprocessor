@@ -9,18 +9,26 @@
   "bin": {
     "envprocessor": "./dist/esm/cli.js"
   },
-  "types": "./dist/types/*.d.ts",
+  "types": "./dist/types/esm/index.d.ts",
   "module": "./dist/cjs/env.cjs",
   "exports": {
     ".": {
-      "import": "./dist/esm/env.js",
-      "require": "./dist/cjs/env.cjs"
+      "import": {
+        "types": "./dist/types/esm/index.d.ts",
+        "default": "./dist/esm/env.js"
+      },
+      "require": {
+        "types": "./dist/types/cjs/index.d.ts",
+        "default": "./dist/cjs/env.cjs"
+      }
     }
   },
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.json && /bin/bash .github/fix-cjs.sh",
-    "build": "rm -rf dist && npm run build:cjs && npm run build:esm && /bin/bash .github/override.sh"
+    "build:types:esm": "tsc -p tsconfig.esm.types.json",
+    "build:types:cjs": "tsc -p tsconfig.cjs.types.json",
+    "build": "rm -rf dist && npm run build:cjs && npm run build:esm && npm run build:types:esm && npm run build:types:cjs && /bin/bash .github/override.sh"
   },
   "homepage": "https://github.com/stopsopa/envprocessor",
   "dependencies": {

@@ -4,6 +4,7 @@
   "compilerOptions": {
     "outDir": "./dist/esm",
     "target": "esnext",
-    "module": "esnext"
+    "module": "esnext",
+    "declarationDir": "./dist/types/esm"
   }
 }
