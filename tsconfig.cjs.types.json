@@ -2,11 +2,11 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
+    "declarationMap": true,
     "emitDeclarationOnly": true,
-    "outFile": "./dist/types/cjs/index.d.ts",
-    "moduleResolution": "node",
-    "module": "amd"
+    "outDir": "./dist/types/cjs",
+    "rootDir": "./src"
   },
-  "include": ["src/source/**/*.ts"],
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts", "dist"]
 }
