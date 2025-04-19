@@ -12,11 +12,15 @@ yarn add envprocessor
 
 ```bash
 
-npx envprocessor
+npx envprocessor --mask "^TERM_" --verbose --enrichModule node_modules/envprocessor/enrich.js var/preprocessed.js var/dist/prep.js
 
-node node_modules/envprocessor/src/cli.js --help
+# can be launched also
 
-node node_modules/envprocessor/src/cli.js --mask "^TERM_" --debug --verbose
+node node_modules/.bin/envprocessor
+
+node node_modules/envprocessor/dist/cjs/cli.cjs
+
+node node_modules/envprocessor/dist/esm/cli.js
 
 ```
 
