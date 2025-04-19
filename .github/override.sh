@@ -33,7 +33,13 @@ echo "${0}: start"
 
 echo ""
 
-cp -vr override/ dist/
+set -x
+mkdir -p dist
+cd dist
+pwd
+set +x
+
+tar vcf - -C ../override . | tar vxf -
 
 echo ""
 
