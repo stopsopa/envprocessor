@@ -8,6 +8,10 @@ import isObject from "./isObject.js";
 
 import { mkdirp } from "mkdirp";
 
+import { getRootDirname } from "./paths.js";
+
+const _root = getRootDirname();
+
 export function th(msg: string): Error {
   return new Error(`preprocessor.js error: ${msg}`);
 }
@@ -154,7 +158,9 @@ export function pickEnvironmentVariables(mask: string | RegExp, obj: Record<stri
  * @returns {string}
  */
 export function getCredit() {
-  const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"));
+  const _filename = path.resolve(_root, "..", "..", "package.json");
+
+  const packageJson = JSON.parse(fs.readFileSync(_filename, "utf8"));
 
   return `${packageJson.name} v${packageJson.version}`;
 }

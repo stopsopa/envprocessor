@@ -23,8 +23,8 @@
 // ✓ lodash.isObject - new Error()                                           -> false -> true
 
 // Cu -> custom
-// const isObjectCu = require("../src/isObject.js");
-import isObjectCu from "../src/isObject.js";
+// const isObjectCu = require("../src/source/isObject.js");
+import isObjectCu from "../src/source/isObject.js";
 
 const isObjectLo = () => {};
 function expelo() {

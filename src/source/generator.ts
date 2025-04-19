@@ -4,11 +4,13 @@ import path from "path";
 
 import template from "./template.js";
 
-const __dirname = path.resolve();
+import { getRootDirname } from "./paths.js";
 
-const tmpFile = path.resolve(__dirname, "src", "template.tmp");
+const _root = getRootDirname();
 
-const str = fs.readFileSync(tmpFile, "utf8");
+const _filename = path.resolve(_root, "..", "..", "src", "source", "template.tmp");
+
+const str = fs.readFileSync(_filename, "utf8");
 
 const tmp = template(str);
 

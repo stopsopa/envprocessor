@@ -5,14 +5,14 @@
   "author": "Szymon Działowski",
   "description": "",
   "license": "MIT",
-  "main": "./src/env.cjs",
+  "main": "./dist/esm/cli.js",
   "bin": {
-    "envprocessor": "./src/cli.js"
+    "envprocessor": "./dist/cjs/cli.js"
   },
   "scripts": {
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.json && /bin/bash .github/fix-cjs.sh",
-    "build": "rm -rf dist && npm run build:cjs && npm run build:esm"
+    "build": "rm -rf dist && npm run build:cjs && npm run build:esm && /bin/bash .github/override.sh"
   },
   "homepage": "https://github.com/stopsopa/envprocessor",
   "dependencies": {

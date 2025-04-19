@@ -29,7 +29,7 @@ import {
   getCredit,
   debugString,
   debugJson,
-} from "../src/preprocessor.js";
+} from "../src/source/preprocessor.js";
 
 describe("preprocessor", () => {
   describe("produceRegex", () => {

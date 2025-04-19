@@ -1,4 +1,4 @@
-const templatePromise = import("../src/template.js");
+const templatePromise = import("../src/source/template.js");
 
 const html = `
 <body>    

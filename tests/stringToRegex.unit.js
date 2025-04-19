@@ -1,5 +1,5 @@
-// const stringToRegex = require("../src/stringToRegex.js");
-import stringToRegex from "../src/stringToRegex.js";
+// const stringToRegex = require("../src/source/stringToRegex.js");
+import stringToRegex from "../src/source/stringToRegex.js";
 
 function d(regex) {
   return {

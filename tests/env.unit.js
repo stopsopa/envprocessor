@@ -9,7 +9,7 @@ import {
   getIntegerThrow,
   getThrow,
   all,
-} from "../src/env.ts";
+} from "../src/source/env.ts";
 
 try {
   jest.setTimeout(100);
