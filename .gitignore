@@ -12,3 +12,4 @@ yarn-error*
 *.tgz
 yarn.lock
 examples/preprocessed.js
+*.tsbuildinfo
