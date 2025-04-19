@@ -4,6 +4,6 @@
     "outDir": "./dist/cjs",
     "target": "es2022",
     "module": "commonjs",
-    "declarationDir": "./dist/types/cjs"
+    "declaration": true
   }
 }
