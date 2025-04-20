@@ -5,22 +5,21 @@
   "author": "Szymon Działowski",
   "description": "",
   "license": "MIT",
-  "main": "./dist/esm/cli.js",
+  "module": "./dist/cjs/env.cjs",
+  "types": "./dist/types/env.d.ts",
   "bin": {
     "envprocessor": "./dist/esm/cli.js"
   },
-  "types": "./dist/types/esm/index.d.ts",
-  "module": "./dist/cjs/env.cjs",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/types/esm/index.d.ts",
-        "default": "./dist/esm/env.js"
-      },
-      "require": {
-        "types": "./dist/types/cjs/index.d.ts",
-        "default": "./dist/cjs/env.cjs"
-      }
+      "import": "./dist/esm/env.js",
+      "require": "./dist/cjs/env.cjs",
+      "types": "./dist/types/env.d.ts"
+    },
+    "./*": {
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.cjs",
+      "types": "./dist/types/*.d.ts"
     }
   },
   "scripts": {
@@ -30,7 +29,6 @@
   },
   "homepage": "https://github.com/stopsopa/envprocessor",
   "dependencies": {
-    "@types/node": "^22.14.1",
     "mkdirp": "^3.0.1"
   }
 }

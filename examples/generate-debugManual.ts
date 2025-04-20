@@ -1,17 +1,19 @@
 /**
  * Possible variants to run:
- *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" node examples/generate-debugJson.js
- *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" VERBOSE=true node examples/generate-debugJson.js
+ *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" node examples/generate-debugManual.js
+ *   ENVPROCESSOR_EXPOSE_ENV_VARS="^TERM" VERBOSE=true node examples/generate-debugManual.js
  */
 
-const { getThrow, has } = require("envprocessor/env.js");
+import { getThrow, has } from "envprocessor";
 
-const {
+import {
   saveToFile,
+  presentExtractedVariables,
   pickEnvironmentVariables,
   produceFileContent,
-  debugJson,
-} = require("envprocessor/preprocessor.js");
+  getCredit,
+  debugString,
+} from "envprocessor/preprocessor";
 
 // Define a mask which can be used to extract subset from all environment variables
 // whichever env var matches that regex it will be exposed to the browser
@@ -19,7 +21,7 @@ const {
 const mask = getThrow("ENVPROCESSOR_EXPOSE_ENV_VARS");
 
 // use mask to extract subset of env vars
-const envVarFiltered = pickEnvironmentVariables(mask, /** @type {Record<string, string>}*/ (process.env));
+const envVarFiltered = pickEnvironmentVariables(mask, process.env as Record<string, string>);
 
 const content = produceFileContent(envVarFiltered);
 
@@ -38,13 +40,18 @@ files.forEach((file) => {
   saveToFile(file, content);
 });
 
+// optional but recommended block to print out exposed env vars on the ouptput
+// here we made this logic depend on VERBOSE env var
 if (has("VERBOSE")) {
-  console.log(
-    JSON.stringify({
-      level: "info",
-      "@timestamp": new Date().toISOString(),
-      message: "envprocessor",
-      meta: debugJson(envVarFiltered, files),
-    }),
-  );
+  console.log(`
+${getCredit()}
+
+  Browser exposed environment variables:
+  
+${presentExtractedVariables(envVarFiltered, 4)}
+
+  Generated files:
+
+${files.map((file) => `    - ${file}`).join("\n")}
+`);
 }

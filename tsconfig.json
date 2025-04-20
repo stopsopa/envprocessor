@@ -1,10 +1,10 @@
 {
-  // https://blog.mastykarz.nl/create-npm-package-commonjs-esm-typescript/
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist/esm",
     "target": "esnext",
     "module": "esnext",
-    "declaration": true
+    "declaration": true,
+    "declarationDir": "./dist/types"
   }
 }
