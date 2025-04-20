@@ -6,7 +6,9 @@ npm install envprocessor
 
 yarn add envprocessor
 
-# first properly working version is 1.8.7
+# first properly working version is 1.8.11
+# that version also exports types properly for CJS and ESM
+# and works with CJS and ESM mode on consumer side
 
 ```
 
