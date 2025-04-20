@@ -5,21 +5,19 @@
   "author": "Szymon Działowski",
   "description": "",
   "license": "MIT",
-  "module": "./dist/cjs/env.cjs",
-  "types": "./dist/types/env.d.ts",
   "bin": {
     "envprocessor": "./dist/esm/cli.js"
   },
   "exports": {
     ".": {
+      "types": "./dist/types/env.d.ts",
       "import": "./dist/esm/env.js",
-      "require": "./dist/cjs/env.cjs",
-      "types": "./dist/types/env.d.ts"
+      "require": "./dist/cjs/env.cjs"
     },
     "./*": {
+      "types": "./dist/types/*.d.ts",
       "import": "./dist/esm/*.js",
-      "require": "./dist/cjs/*.cjs",
-      "types": "./dist/types/*.d.ts"
+      "require": "./dist/cjs/*.cjs"
     }
   },
   "scripts": {
