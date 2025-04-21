@@ -138,20 +138,19 @@ npx envprocessor
 npx envprocessor --mask "^(TERM_|USER|HOME)" --verbose --debug \
     --enrichModule node_modules/envprocessor/enrich.js var/preprocessed.js var/dist/prep.js
 # mask above is just an example, probably you will not want to expose USER env var ...
-# thiat will generate two files: var/preprocessed.js var/dist/prep.js
+# that will generate two files: var/preprocessed.js var/dist/prep.js
 # and will add some extra env vars by executing custom script
 # in this case it is node_modules/envprocessor/enrich.js 
-# but you can use this one as an example and create your own
+# but you can use this one as an template and create your own
 
-# I would create these "added" env vars "synthetic env vars". 
+# One can name these "added" env vars a "synthetic env vars". 
 # Because it can be anything you like but those
 # will not exist in original backend environment as real pod env vars
 
 # the same way as you don't expose all env vars from the backend, 
 # here you will have env vars which will only exist in the browser
 
-# you might also provide mask using env var injected into the pod during creation 
-# if you wish, 
+# you might also provide mask using env var injected into the pod during creation if you wish, 
 # this way we have to just tell the tool which env var to use to get the mask like:
 
 export MASK="^(TERM_|USER|HOME)"
@@ -162,13 +161,12 @@ npm install envprocessor
 
 # you can use it directly from node_modules
 
+# ESM
 node node_modules/.bin/envprocessor
+node node_modules/envprocessor/dist/esm/cli.js
 
 # CJS
 node node_modules/envprocessor/dist/cjs/cli.cjs
-
-# ESM
-node node_modules/envprocessor/dist/esm/cli.js
 
 # or register in package.json
 {
@@ -191,15 +189,6 @@ There is also way to create custom script where you can extend behaviour of envp
 
 # Using from the project
 
-add loading script below before scripts loading transpiled js in your project main html:
-
-```html
-
-<script src="/envprocessed.js"></script>
-
-```
-
-then use env vars in browser using:
 
 ```js
 
