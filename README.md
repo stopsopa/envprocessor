@@ -158,8 +158,10 @@ npm install envprocessor
 
 node node_modules/.bin/envprocessor
 
+# CJS
 node node_modules/envprocessor/dist/cjs/cli.cjs
 
+# ESM
 node node_modules/envprocessor/dist/esm/cli.js
 
 # or register in package.json
@@ -174,14 +176,14 @@ npm run preprocessor`
 
 ```
 
-# examples from js module
+# Examples from js module
 
 There is also way to create custom script where you can extend behaviour of envprocessor the way you like:
 
 - [examples](examples) directory
 - web example [/envprocessor/examples/index.html](https://stopsopa.github.io/envprocessor/examples/index.html) loading preprocessed.js into the browser context - just inspect it with chrome developer tools
 
-# using from project
+# Using from the project
 
 add loading script below before scripts loading transpiled js in your project main html:
 
@@ -196,10 +198,28 @@ then use env vars in browser using:
 ```js
 
 // ESM
-import { get } from "envprocessor";
+import {   
+  get,
+  has,
+  getDefault,
+  getThrow,
+
+  getIntegerThrowInvalid, // equivalent to get
+  getIntegerDefault,
+  getIntegerThrow, 
+} from "envprocessor";
 
 // CJS
-const { get } = require("envprocessor");
+const {   
+  get,
+  has,
+  getDefault,
+  getThrow,
+
+  getIntegerThrowInvalid, // equivalent to get
+  getIntegerDefault,
+  getIntegerThrow,  
+} = require("envprocessor");
 
 console.log(`get('USER') >${get("USER")}`);
 
