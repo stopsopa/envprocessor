@@ -9,20 +9,23 @@ function differenceDetected(options: OptionsType, values: ValuesType): boolean {
 
   for (const key of keys) {
     const option = options[key];
-    const c1 = typeof values[key] === option.type;
 
-    // Use type guard to check for default property
-    const c2 = hasDefaultProperty(option);
+    if (typeof values[key] !== option.type) {
+      return true;
+    }
 
-    // Now TypeScript knows that option.default exists if c2 is true
-    const c3 = c2 && "default" in option && values[key] !== option.default;
-
-    if (c1 && c2 && c3) {
-      return false;
+    if (hasDefaultProperty(option)) {
+      if ("default" in option && values[key] !== option.default) {
+        return true;
+      }
+    } else {
+      if (typeof values[key] !== "undefined") {
+        return true;
+      }
     }
   }
 
-  return true;
+  return false;
 }
 
 export default differenceDetected;

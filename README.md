@@ -22,7 +22,7 @@ So it means you can't expose anything specific to PROD, STAGING or DEV environme
 
 Once build is done exposed variables becomes part of the build itself - so in other words they are hardcoded in the bundle.
 
-Another problem is that each of framwork allows to expose only env vars prefixed with some specific prefix (e.g. `VITE_` or `REACT_APP_`).
+Another problem is that each of framwork seems to allow to expose only env vars prefixed with some specific prefix (e.g. `VITE_` or `REACT_APP_`).
 It would be nice to have more flexibility here and be able to pick exactly what we want to expose.
 
 So let's try to find a solution to that.
@@ -182,7 +182,15 @@ node node_modules/envprocessor/dist/cjs/cli.cjs
 }
 
 # and then run it (also you can use this style in start.sh above):
-npm run preprocessor`
+npm run preprocessor
+
+# you can also process env vars from .env file using native 
+# try to create .env file
+cat <<EEE > .env
+ENV_VAR_FROM_DOTENV="from .env file"
+EEE
+# and then run:
+node --env-file=.env node_modules/.bin/envprocessor --mask "^ENV_" --verbose var/from_env.js
 
 ```
 

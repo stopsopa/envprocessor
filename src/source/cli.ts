@@ -48,7 +48,9 @@ import {
     process.exit(0);
   }
 
-  if (differenceDetected(options, values)) {
+  const argsDifferentThanDefault = differenceDetected(options, values);
+
+  if (!argsDifferentThanDefault) {
     console.log(`
 ${getCredit()}      
 
