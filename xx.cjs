@@ -86,9 +86,11 @@ open "file://$(realpath "coverage/index.html")"
     },
     [`test server`]: {
       command: `
+shopt -s expand_aliases && source ~/.bashrc      
 COMMANDS="$(cat <<-EOF
 
-TEST_ONE="one" TEST_TWO="two" node src/cli.js --mask '^TEST_' examples/preprocessed.js --debug      
+xx build
+TEST_ONE="one" TEST_TWO="two" node dist/cjs/cli.cjs --mask '^TEST_' examples/preprocessed.js --debug    
 HOST="0.0.0.0" PORT="8433" node server.js
 
 EOF

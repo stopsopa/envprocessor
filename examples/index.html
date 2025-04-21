@@ -17,7 +17,7 @@
     <script type="importmap">
       {
         "imports": {
-          "env": "../src/source/env.mjs"
+          "env": "../dist/esm/env.js"
         }
       }
     </script>
@@ -36,14 +36,12 @@
 
       const pre = document.querySelector("pre");
 
-      console.log("pre", pre);
-
       pre.innerHTML += `
 
     TEST_ONE: ${get("TEST_ONE")}
     TEST_TWO: ${get("TEST_TWO")}
 
-    all: ${JSON.stringify(all(), null, 4)}
+    all: ${JSON.stringify(all())}
 
 `;
     </script>
