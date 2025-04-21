@@ -19,90 +19,52 @@ export function getParseArgs() {
 
 const options = {
   help: {
-    type: "boolean",
+    type: "boolean" as const,
     default: false,
   },
   debug: {
-    type: "boolean",
+    type: "boolean" as const,
     default: false,
   },
   verbose: {
-    type: "boolean",
+    type: "boolean" as const,
     default: false,
   },
   dryrun: {
-    type: "boolean",
+    type: "boolean" as const,
     default: false,
   },
   verboseEnv: {
-    type: "string",
+    type: "string" as const,
   },
 
   mask: {
-    type: "string",
+    type: "string" as const,
   },
   maskEnv: {
-    type: "string",
+    type: "string" as const,
   },
 
   enrichModule: {
-    type: "string",
+    type: "string" as const,
   },
 
   enrichModuleEnv: {
-    type: "string",
+    type: "string" as const,
   },
 };
 
-export type OptionsType = typeof options;
+type OptionsType = typeof options;
 
 const { values, positionals } = parseArgs({
   args: process.argv.slice(2),
-  // I had to duplicate options even despite it would be nice to reuse it from above
-  // but typescript seems to have problems with derrifing types from parseArgs() when
-  // we don't pass it directly
-  options: {
-    help: {
-      type: "boolean",
-      default: false,
-    },
-    debug: {
-      type: "boolean",
-      default: false,
-    },
-    verbose: {
-      type: "boolean",
-      default: false,
-    },
-    dryrun: {
-      type: "boolean",
-      default: false,
-    },
-    verboseEnv: {
-      type: "string",
-    },
-
-    mask: {
-      type: "string",
-    },
-    maskEnv: {
-      type: "string",
-    },
-
-    enrichModule: {
-      type: "string",
-    },
-
-    enrichModuleEnv: {
-      type: "string",
-    },
-  },
+  options,
   strict: true,
   allowPositionals: true,
   allowNegative: true,
 });
 
-export type ValuesType = typeof values;
-export type PositionalsType = typeof positionals;
+type ValuesType = typeof values;
+type PositionalsType = typeof positionals;
 
-export { options, values, positionals };
+export { options, values, positionals, OptionsType, ValuesType, PositionalsType };
