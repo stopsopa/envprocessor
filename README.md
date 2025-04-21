@@ -1,3 +1,9 @@
+[![Tests](https://github.com/stopsopa/envprocessor/actions/workflows/tests.yml/badge.svg)](https://github.com/stopsopa/envprocessor/actions/workflows/tests.yml)
+[![npm version](https://badge.fury.io/js/envprocessor.svg)](https://badge.fury.io/js/envprocessor)
+[![npm version](https://shields.io/npm/v/envprocessor)](https://www.npmjs.com/package/envprocessor)
+[![NpmLicense](https://img.shields.io/npm/l/envprocessor.svg)](https://github.com/stopsopa/envprocessor/blob/master/LICENSE)
+![jest coverage](https://stopsopa.github.io/envprocessor/coverage/coverage-badge.svg)
+
 # The problem
 
 Sometimes we would like to make some env vars available in the browser - on the client side. 
