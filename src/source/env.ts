@@ -32,7 +32,7 @@ export function mockEnv(map: Record<string, string>): void {
 }
 
 /**
- * Returns all environment variables
+ * Returns a complete object containing all environment variables
  */
 export function all(): Record<string, string> {
   return env;
@@ -46,14 +46,14 @@ export function has(key: string): boolean {
 }
 
 /**
- * Gets an environment variable
+ * Retrieves an environment variable if it exists
  */
 export function get(key: string): string | undefined {
   return env[key];
 }
 
 /**
- * Gets an environment variable with a default value
+ * Retrieves an environment variable or returns the specified default value if not found
  */
 export function getDefault(key: string, defaultValue: string | number): string | number {
   if (has(key)) {
@@ -63,7 +63,7 @@ export function getDefault(key: string, defaultValue: string | number): string |
 }
 
 /**
- * Gets an environment variable or throws if not defined
+ * Retrieves an environment variable or throws an error if it doesn't exist
  */
 export function getThrow(key: string, msg?: string): string {
   if (has(key)) {
@@ -75,8 +75,9 @@ export function getThrow(key: string, msg?: string): string {
 const intTest = /^-?\d+$/;
 
 /**
- * Don't throw if env var not defined - in that case it will return undefined.
- * Throws if the environment is defined but after casting to int is not a number.
+ * Retrieves an environment variable and converts it to an integer
+ * Returns undefined if the variable doesn't exist
+ * Throws an error if the variable exists but cannot be converted to a valid integer
  */
 export function getIntegerThrowInvalid(key: string): number | undefined {
   if (has(key)) {
@@ -119,7 +120,8 @@ export function getIntegerDefault(key: string, defaultValue: number): number {
 }
 
 /**
- * Get env var cast to integer and throw if anything during casting to int fail or env var is not defined
+ * Retrieves an environment variable, converts it to an integer, and returns the value.
+ * Throws an error if the variable is not defined or cannot be converted to a valid integer.
  */
 export function getIntegerThrow(key: string): number {
   const val = getIntegerThrowInvalid(key);

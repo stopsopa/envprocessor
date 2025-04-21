@@ -73,7 +73,17 @@ And in our code we can use library `envprocessor` which will pick up `window.pro
 
 ```js
 
-import { getThrow, has } from "envprocessor";
+import {   
+  all,
+  get,
+  has,
+  getDefault,
+  getThrow,
+
+  getIntegerThrowInvalid, // equivalent to get
+  getIntegerDefault,
+  getIntegerThrow,  
+} from "envprocessor";
 
 if (has('MY_ENV')) {
   console.log(getThrow('MY_ENV'));
@@ -207,7 +217,8 @@ There is also way to create custom script where you can extend behaviour of envp
 ```js
 
 // ESM
-import {   
+import {  
+  all, 
   get,
   has,
   getDefault,
@@ -220,6 +231,7 @@ import {
 
 // CJS
 const {   
+  all,
   get,
   has,
   getDefault,
