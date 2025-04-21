@@ -3,7 +3,11 @@ const stringToRegex = (function () {
     return new Error("stringToRegex error: " + msg);
   }
 
-  return (v: string) => {
+  /**
+   * @throws {Error} if input splits into more than 2 segments
+   * @throws {Error} if the string is not a valid regex
+   */
+  return (v: string): RegExp => {
     try {
       const vv = v.match(/(\\.|[^/])+/g);
 
