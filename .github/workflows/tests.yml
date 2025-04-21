@@ -91,7 +91,7 @@ jobs:
         run: |
           set -e
           set -o pipefail
-          cat var/for-coverage-badge.log | node bash/node/coverage-badge.cjs --output var/coverage-badge.svg
+          cat var/for-coverage-badge.log | node bash/node/coverage-badge.cjs --output coverage/coverage-badge.svg
 
       - name: build
         run: npm run build
