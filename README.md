@@ -16,7 +16,7 @@ So it means you can't expose anything specific to PROD, STAGING or DEV environme
 
 Once build is done exposed variables becomes part of the build itself - so in other words they are hardcoded in the bundle.
 
-Another problem is that each of framwork allows to expose only env vars prefixed with some specific prefix (e.g. VITE_ or REACT_APP_).
+Another problem is that each of framwork allows to expose only env vars prefixed with some specific prefix (e.g. `VITE_` or `REACT_APP_`).
 It would be nice to have more flexibility here and be able to pick exactly what we want to expose.
 
 So let's try to find a solution to that.
@@ -63,7 +63,7 @@ This script have to be loaded before our bundled code assembled by given framewo
 ```
 
 
-Then in our code we can use library 'envprocessor' which will pick up `window.process.env` and provide set of method to work with env vars in the browser:
+And in our code we can use library `envprocessor` which will pick up `window.process.env` and provide set of method to work with exported env vars in the browser:
 
 ```js
 
@@ -77,7 +77,7 @@ if (has('MY_ENV')) {
 
 ```
 
-Important thing to understand is that natural point where building/generating `/dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the pod).
+Important thing to understand is that natural point where building/generating `dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the pod).
 
 Normally our pod will be defined with entrypoint in Dockerfile something like:
 
@@ -89,13 +89,17 @@ FROM node:...
 ENTRYPOINT ["npm", "start"]
 ```
 
-In order to generate `/dist/preprocessed.js` we would need to install `npm install envprocessor` (not as a devDependencies) and can create shell script in our project like:
+In order to generate `dist/preprocessed.js` we would need to install `npm install envprocessor` (not as a devDependencies) and can create shell script in our project like:
 
 ```bash
 # start.sh file
 
-set -e # this is actually important to forward errors
-set -x # we can also add debug mode (optional) - that will print every command before executing in the pod log
+set -e 
+# this is actually important to forward errors
+
+set -x 
+# we can also add debug mode (optional) 
+# that will print every command before executing in the pod log
 
 node node_modules/.bin/envprocessor --mask "^TERM_" dist/preprocessed.js
 # add --debug and --verbose flags to command above if you need more details
@@ -131,21 +135,23 @@ yarn add envprocessor
 # to see help and version
 npx envprocessor
 
-npx envprocessor --mask "^(TERM_|USER|HOME)" --verbose --debug --enrichModule node_modules/envprocessor/enrich.js var/preprocessed.js var/dist/prep.js
+npx envprocessor --mask "^(TERM_|USER|HOME)" --verbose --debug \
+    --enrichModule node_modules/envprocessor/enrich.js var/preprocessed.js var/dist/prep.js
 # mask above is just an example, probably you will not want to expose USER env var ...
 # thiat will generate two files: var/preprocessed.js var/dist/prep.js
 # and will add some extra env vars by executing custom script
-# in this case it is node_modules/envprocessor/enrich.js but you can use this one as an example
-# and create your own
+# in this case it is node_modules/envprocessor/enrich.js 
+# but you can use this one as an example and create your own
 
 # I would create these "added" env vars "synthetic env vars". 
 # Because it can be anything you like but those
 # will not exist in original backend environment as real pod env vars
 
-# the same way as you don't expose all env vars from the backend, here you will have env vars which will only
-# exist in the browser
+# the same way as you don't expose all env vars from the backend, 
+# here you will have env vars which will only exist in the browser
 
-# you might also provide mask using env var injected into the pod during creation if you wish,
+# you might also provide mask using env var injected into the pod during creation 
+# if you wish, 
 # this way we have to just tell the tool which env var to use to get the mask like:
 
 export MASK="^(TERM_|USER|HOME)"

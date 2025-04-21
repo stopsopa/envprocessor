@@ -27,5 +27,5 @@
     "var/": true
   },
   "debug.javascript.autoAttachFilter": "always",
-  "typescript.tsdk": "node_modules/typescript/lib" // https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
