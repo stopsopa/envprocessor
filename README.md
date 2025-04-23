@@ -93,6 +93,8 @@ if (has('MY_ENV')) {
 
 ```
 
+Above is safe to just import into our buldned code.
+
 Important thing to understand is that natural point where building/generating `dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the pod).
 
 Normally our pod will be defined with entrypoint in Dockerfile something like:
