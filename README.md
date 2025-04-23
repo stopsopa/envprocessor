@@ -93,7 +93,7 @@ if (has('MY_ENV')) {
 
 ```
 
-Above is safe to just import into our buldned code.
+Above is safe to just import into our bundled code.
 
 Important thing to understand is that natural point where building/generating `dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the pod).
 
