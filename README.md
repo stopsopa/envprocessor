@@ -1,4 +1,5 @@
-![ts](https://badgen.net/badge/Built%20With/TypeScript/blue)
+
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 [![Tests](https://github.com/stopsopa/envprocessor/actions/workflows/tests.yml/badge.svg)](https://github.com/stopsopa/envprocessor/actions/workflows/tests.yml)
 [![npm version](https://badge.fury.io/js/envprocessor.svg)](https://badge.fury.io/js/envprocessor)
 [![npm version](https://shields.io/npm/v/envprocessor)](https://www.npmjs.com/package/envprocessor)
