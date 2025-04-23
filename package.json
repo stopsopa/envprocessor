@@ -8,6 +8,7 @@
   "bin": {
     "envprocessor": "./dist/esm/cli.js"
   },
+  "types": "./dist/types/env.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/env.d.ts",
