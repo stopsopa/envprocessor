@@ -206,12 +206,12 @@ node --env-file=.env node_modules/.bin/envprocessor --mask "^ENV_" --verbose var
 
 ```
 
-# Examples from js module
+# Script form - examples
 
-There is also way to create custom script where you can extend behaviour of envprocessor the way you like:
+There is also way to create custom script where you can extend behaviour of envprocessor the way you like, see [examples](examples) directory.
 
-- [examples](examples) directory
-- web example [/envprocessor/examples/index.html](https://stopsopa.github.io/envprocessor/examples/index.html) loading preprocessed.js into the browser context - just inspect it with chrome developer tools
+# Demo
+web example [/envprocessor/examples/index.html](https://stopsopa.github.io/envprocessor/examples/index.html) loading preprocessed.js into the browser context - just inspect it with chrome developer tools
 
 # Using from the project
 
