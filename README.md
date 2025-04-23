@@ -196,7 +196,7 @@ node node_modules/envprocessor/dist/cjs/cli.cjs
 # and then run it (also you can use this style in start.sh above):
 npm run preprocessor
 
-# you can also process env vars from .env file using native 
+# you can also process env vars from .env file using native --env-file or --env-file-if-exists
 # try to create .env file
 cat <<EEE > .env
 ENV_VAR_FROM_DOTENV="from .env file"
