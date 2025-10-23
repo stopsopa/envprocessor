@@ -6,13 +6,19 @@
     <title>Document</title>
   </head>
   <body>
-    <pre>
+    <script
+      type="module"
+      src="https://stopsopa.github.io/ace-editor-webcomponent/ace-web-component.js"
+      data-main-ace="https://stopsopa.github.io/ace-editor-webcomponent/noprettier/ace/ace-builds-1.43.4/src-min-noconflict/ace.js"
+    ></script>
+    <ace-editor lang="javascript" id="ace">
+      <script type="ace">
 
-    node node_modules/envprocessor/src/cli.js --mask "^TERM_" --verbose --enrichModule "commonjs.js" var/preprocessed.js
+        node node_modules/envprocessor/src/cli.js --mask "^TERM_" --verbose --enrichModule "commonjs.js" var/preprocessed.js
 
-    HOST="0.0.0.0" PORT="8433" node server.js
-
-    </pre>
+        HOST="0.0.0.0" PORT="8433" node server.js
+      </script>
+    </ace-editor>
     <script src="preprocessed.js"></script>
     <script type="importmap">
       {
@@ -34,16 +40,22 @@
         getIntegerThrow,
       } from "env";
 
-      const pre = document.querySelector("pre");
+      const pre = document.querySelector("#ace");
 
-      pre.innerHTML += `
-
-    TEST_ONE: ${get("TEST_ONE")}
-    TEST_TWO: ${get("TEST_TWO")}
-
-    all: ${JSON.stringify(all())}
-
-`;
+      document.addEventListener("ace-onload", (event) => {
+        setTimeout(() => {
+          pre.value =
+            pre.value +
+            `
+          
+          TEST_ONE: ${get("TEST_ONE")}
+          TEST_TWO: ${get("TEST_TWO")}
+          
+          all: ${JSON.stringify(all())}
+          
+          `;
+        }, 1000);
+      });
     </script>
   </body>
 </html>
