@@ -42,11 +42,10 @@
 
       const pre = document.querySelector("#ace");
 
-      document.addEventListener("ace-onload", (event) => {
-        setTimeout(() => {
-          pre.value =
-            pre.value +
-            `
+      ace.addEventListener("onLoad", () => {
+        ace.value =
+          ace.value +
+          `
           
           TEST_ONE: ${get("TEST_ONE")}
           TEST_TWO: ${get("TEST_TWO")}
@@ -54,7 +53,6 @@
           all: ${JSON.stringify(all())}
           
           `;
-        }, 1000);
       });
     </script>
   </body>
