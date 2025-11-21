@@ -95,9 +95,9 @@ if (has('MY_ENV')) {
 
 ```
 
-Above is safe to just import into our bundled code.
+Above is safe to import into our bundled code.
 
-Important thing to understand is that natural point where building/generating `dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the pod).
+Important thing to understand is that natural point where building/generating `dist/preprocessed.js` have to happen is just before launching the app in the final environment (e.g. in the container or in the K8S pod).
 
 Normally our pod will be defined with entrypoint in Dockerfile something like:
 
