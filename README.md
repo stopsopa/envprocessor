@@ -5,6 +5,7 @@
 [![npm version](https://shields.io/npm/v/envprocessor)](https://www.npmjs.com/package/envprocessor)
 [![NpmLicense](https://img.shields.io/npm/l/envprocessor.svg)](https://github.com/stopsopa/envprocessor/blob/master/LICENSE)
 ![jest coverage](https://stopsopa.github.io/envprocessor/coverage/coverage-badge.svg)
+[![dependencies](https://depx.co/api/badge/envprocessor)](https://depx.co/pkg/envprocessor)
 
 # The problem
 
