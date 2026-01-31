@@ -23,7 +23,7 @@ After working for few years with different frameworks I've noticed that most of 
 The problem with all solutions above is that each of them allows you to expose only during build time.
 So it means you can't expose anything specific to PROD, STAGING or DEV environment because during build these environments are not available/visible yet.
 
-Once build is done exposed variables becomes part of the build itself - so in other words they are hardcoded in the bundle.
+Once build is done, exposed variables becomes part of the build itself - so in other words they are hardcoded in the bundle.
 
 Another problem is that each of framwork seems to allow to expose only env vars prefixed with some specific prefix (e.g. `VITE_` or `REACT_APP_`).
 It would be nice to have more flexibility here and be able to pick exactly what we want to expose.
