@@ -9,7 +9,7 @@
 
 # The problem
 
-Sometimes we would like to make some env vars available in the browser - on the client side. 
+Sometimes we would like to have access to some env vars available in the browser - on the client side. 
 
 Obviously we have to be very careful with that, because we don't want to expose any sensitive information.
 
