@@ -33,7 +33,7 @@ rm -rf .github
 rm -rf .gitignore
 rm -rf .husky
 rm -rf .npmignore
-rm -rf .nvmrc
+rm -rf .tool-versions
 rm -rf .prettierignore
 rm -rf .vscode
 rm -rf bash
