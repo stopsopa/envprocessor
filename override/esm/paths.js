@@ -1,3 +1,7 @@
+/**
+ * diff: https://i.imgur.com/ciANCnY.png
+ */
+
 import path from "path";
 
 import { fileURLToPath } from "url";
