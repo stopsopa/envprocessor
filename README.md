@@ -82,6 +82,8 @@ import {
   has,
   getDefault,
   getThrow,
+  getTrimmedThrow,
+  getValidatedThrow,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
@@ -228,6 +230,8 @@ import {
   has,
   getDefault,
   getThrow,
+  getTrimmedThrow,
+  getValidatedThrow,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
@@ -241,6 +245,8 @@ const {
   has,
   getDefault,
   getThrow,
+  getTrimmedThrow,
+  getValidatedThrow,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
@@ -248,6 +254,19 @@ const {
 } = require("envprocessor");
 
 console.log(`get('USER') >${get("USER")}`);
+
+# Methods description
+
+- `all()`: Returns a complete object containing all environment variables.
+- `get(key)`: Retrieves an environment variable if it exists, otherwise returns `undefined`.
+- `has(key)`: Checks if an environment variable exists.
+- `getDefault(key, defaultValue)`: Retrieves an environment variable or returns the specified `defaultValue` if not found.
+- `getThrow(key)`: Retrieves an environment variable or throws an error if it doesn't exist.
+- `getTrimmedThrow(key)`: Retrieves, trims, and throws an error if the variable is missing or empty after trimming.
+- `getValidatedThrow(key, validator)`: Retrieves and validates using a `RegExp` or a custom function. The validator function should return an error message `string` on failure, or `null`/`undefined` on success. It can also throw an error directly.
+- `getIntegerThrowInvalid(key)`: Retrieves and converts to an integer. Throws if it exists but is not a valid integer.
+- `getIntegerDefault(key, defaultValue)`: Retrieves as an integer, or returns `defaultValue` if not found or invalid.
+- `getIntegerThrow(key)`: Retrieves as an integer, throws if missing or invalid.
 
 ```
 

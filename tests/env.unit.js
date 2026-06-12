@@ -8,6 +8,8 @@ import {
   getIntegerDefault,
   getIntegerThrow,
   getThrow,
+  getTrimmedThrow,
+  getValidatedThrow,
   all,
 } from "../src/source/env.ts";
 
@@ -110,3 +112,40 @@ it("all - returns all environment variables", async () => {
   expect(all()).toEqual(mockEnvironment);
   expect(all()).toBe(mockEnvironment); // Check that it returns the same object reference
 });
+
+it("getTrimmedThrow", async () => {
+  mockEnv({
+    ABC: "  DEF  ",
+    EMPTY: "   ",
+  });
+
+  expect(getTrimmedThrow("ABC")).toEqual("DEF");
+  expect(() => getTrimmedThrow("EMPTY")).toThrowError(
+    "env.js: env var EMPTY is defined but it is an empty string after trimming",
+  );
+  expect(() => getTrimmedThrow("GHI")).toThrowError("env.js: env var GHI is not defined");
+});
+
+it("getValidatedThrow", async () => {
+  mockEnv({
+    ABC: "123",
+    DEF: "abc",
+  });
+
+  expect(getValidatedThrow("ABC", /^\d+$/)).toEqual("123");
+  expect(() => getValidatedThrow("DEF", /^\d+$/)).toThrowError(
+    "env.js: env var DEF value >abc< does not match regex >/^\\d+$/<",
+  );
+
+  expect(getValidatedThrow("ABC", (v) => (v === "123" ? null : "must be 123"))).toEqual("123");
+  expect(() => getValidatedThrow("DEF", (v) => (v === "123" ? null : "must be 123"))).toThrowError(
+    "env.js: must be 123",
+  );
+
+  expect(() =>
+    getValidatedThrow("ABC", () => {
+      throw new Error("custom error");
+    }),
+  ).toThrowError("custom error");
+});
+
