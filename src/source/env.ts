@@ -148,9 +148,9 @@ export function getValidatedThrow(
  */
 export function getDefaultIfInvalid(
   key: string,
-  defaultValue: string | number,
+  defaultValue: string,
   validator: RegExp | ((value: string) => any),
-): string | number {
+): string {
   try {
     const value = getThrow(key);
 
