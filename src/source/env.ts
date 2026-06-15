@@ -182,11 +182,9 @@ export function getIntegerDefault(key: string, defaultValue: number): number {
     if (typeof val === "number") {
       return val;
     }
+  } catch (e) {}
 
-    return defaultValue;
-  } catch (e) {
-    return defaultValue;
-  }
+  return defaultValue;
 }
 
 /**
