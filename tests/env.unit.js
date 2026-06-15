@@ -4,7 +4,6 @@ import {
   mockEnv,
   get,
   getDefault,
-  getIntegerThrowInvalid,
   getIntegerDefault,
   getIntegerThrow,
   getThrow,
@@ -45,23 +44,6 @@ it("getThrow - ABC -> DEF", async () => {
   expect(() => getThrow("GHI")).toThrowError("env.js: env var GHI is not defined");
 });
 
-it("getIntegerThrowInvalid - ABC -> 123", async () => {
-  mockEnv({
-    ABC: "123",
-    ZZZ: "not a number",
-    BIG: "90071992547409919007199254740991",
-  });
-
-  expect(getIntegerThrowInvalid("ABC")).toEqual(123);
-  expect(getIntegerThrowInvalid("GHI")).toEqual(undefined);
-  expect(() => getIntegerThrowInvalid("ZZZ")).toThrowError(
-    "env.js: env var ZZZ is not a number. value >not a number<, doesn't match regex >/^-?\\d+$/<",
-  );
-  expect(() => getIntegerThrowInvalid("BIG")).toThrowError(
-    "env.js: parseInt(90071992547409919007199254740991, 10) returned 9.007199254740992e+31, doesn't match regex >/^-?\\d+$/<",
-  );
-});
-
 it("getIntegerDefault - ABC -> 123", async () => {
   mockEnv({
     ABC: "123",
@@ -96,7 +78,7 @@ test("getIntegerThrow", async () => {
   }
 
   expect(data).toEqual({
-    throw: "env.js: env var GHI is not defined or is not a number",
+    throw: "env.js: env var GHI is not defined",
     throw2: "env.js: env var ZZZ is not a number. value >not a number<, doesn't match regex >/^-?\\d+$/<",
   });
 });

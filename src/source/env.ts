@@ -174,36 +174,6 @@ export function getDefaultIfInvalid(
 const intTest = /^-?\d+$/;
 
 /**
- * Retrieves an environment variable and converts it to an integer.
- *
- * @param key - The name of the environment variable.
- * @returns The integer value if it exists and is valid, otherwise undefined.
- * @throws Will throw an error if the variable exists but cannot be converted to a valid integer.
- */
-export function getIntegerThrowInvalid(key: string): number | undefined {
-  if (has(key)) {
-    // We know the value exists because has(key) returned true
-    const value = get(key) as string;
-
-    if (!intTest.test(value)) {
-      throw th(`env var ${key} is not a number. value >${value}<, doesn't match regex >${intTest}<`);
-    }
-
-    const int = parseInt(value, 10);
-
-    const strint = String(int);
-
-    if (!intTest.test(strint)) {
-      throw th(`parseInt(${value}, 10) returned ${strint}, doesn't match regex >${intTest}<`);
-    }
-
-    return int;
-  }
-
-  return undefined;
-}
-
-/**
  * Retrieves an environment variable as an integer, or returns a default value if not found or invalid.
  *
  * @param key - The name of the environment variable.
@@ -212,11 +182,7 @@ export function getIntegerThrowInvalid(key: string): number | undefined {
  */
 export function getIntegerDefault(key: string, defaultValue: number): number {
   try {
-    const val = getIntegerThrowInvalid(key);
-
-    if (typeof val === "number") {
-      return val;
-    }
+    return getIntegerThrow(key);
   } catch (e) {}
 
   return defaultValue;
@@ -230,11 +196,19 @@ export function getIntegerDefault(key: string, defaultValue: number): number {
  * @throws Will throw an error if the variable is not defined or cannot be converted to a valid integer.
  */
 export function getIntegerThrow(key: string): number {
-  const val = getIntegerThrowInvalid(key);
+  const value = getThrow(key);
 
-  if (typeof val === "number") {
-    return val;
+  if (!intTest.test(value)) {
+    throw th(`env var ${key} is not a number. value >${value}<, doesn't match regex >${intTest}<`);
   }
 
-  throw th(`env var ${key} is not defined or is not a number`);
+  const int = parseInt(value, 10);
+
+  const strint = String(int);
+
+  if (!intTest.test(strint)) {
+    throw th(`parseInt(${value}, 10) returned ${strint}, doesn't match regex >${intTest}<`);
+  }
+
+  return int;
 }
