@@ -10,6 +10,7 @@ import {
   getThrow,
   getTrimmedThrow,
   getValidatedThrow,
+  getDefaultIfInvalid,
   all,
 } from "../src/source/env.ts";
 
@@ -148,4 +149,28 @@ it("getValidatedThrow", async () => {
     }),
   ).toThrowError("custom error");
 });
+
+it("getDefaultIfInvalid", async () => {
+  mockEnv({
+    ABC: "123",
+    DEF: "abc",
+  });
+
+  expect(getDefaultIfInvalid("ABC", "fallback", /^\d+$/)).toEqual("123");
+  expect(getDefaultIfInvalid("DEF", "fallback", /^\d+$/)).toEqual("fallback");
+  expect(getDefaultIfInvalid("GHI", "fallback", /^\d+$/)).toEqual("fallback");
+
+  expect(getDefaultIfInvalid("ABC", "fallback", (v) => (v === "123" ? null : "error"))).toEqual("123");
+  expect(getDefaultIfInvalid("DEF", "fallback", (v) => (v === "123" ? null : "error"))).toEqual("fallback");
+
+  expect(
+    getDefaultIfInvalid("ABC", "fallback", () => {
+      throw new Error("custom error");
+    }),
+  ).toEqual("fallback");
+
+  expect(getDefaultIfInvalid("ABC", "fallback", () => undefined)).toEqual("123");
+  expect(getDefaultIfInvalid("ABC", "fallback", () => true)).toEqual("fallback");
+});
+
 

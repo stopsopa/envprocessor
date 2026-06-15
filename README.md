@@ -264,6 +264,7 @@ console.log(`get('USER') >${get("USER")}`);
 - `getThrow(key)`: Retrieves an environment variable or throws an error if it doesn't exist.
 - `getTrimmedThrow(key)`: Retrieves, trims, and throws an error if the variable is missing or empty after trimming.
 - `getValidatedThrow(key, validator)`: Retrieves and validates using a `RegExp` or a custom function. The validator function should return an error message `string` on failure, or `null`/`undefined` on success. It can also throw an error directly.
+- `getDefaultIfInvalid(key, defaultValue, validator)`: Retrieves and validates using a `RegExp` or a custom function. If validation fails (regex mismatch, function returns anything other than `null`/`undefined`, or function throws) or the variable is not found, it returns the specified `defaultValue`.
 - `getIntegerThrowInvalid(key)`: Retrieves and converts to an integer. Throws if it exists but is not a valid integer.
 - `getIntegerDefault(key, defaultValue)`: Retrieves as an integer, or returns `defaultValue` if not found or invalid.
 - `getIntegerThrow(key)`: Retrieves as an integer, throws if missing or invalid.

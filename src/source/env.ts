@@ -136,6 +136,41 @@ export function getValidatedThrow(
   return value;
 }
 
+/**
+ * Retrieves an environment variable and validates it using a regex or a custom function.
+ * If validation fails (regex doesn't match, function returns not null/undefined, or function throws)
+ * or the variable is not found, it returns the specified default value.
+ *
+ * @param key - The name of the environment variable.
+ * @param defaultValue - The value to return if the environment variable is not defined or validation fails.
+ * @param validator - A RegExp to test against or a function that returns something not null/undefined or throws on failure.
+ * @returns The value of the environment variable if validation passes, otherwise the default value.
+ */
+export function getDefaultIfInvalid(
+  key: string,
+  defaultValue: string | number,
+  validator: RegExp | ((value: string) => any),
+): string | number {
+  try {
+    const value = getThrow(key);
+
+    if (validator instanceof RegExp) {
+      if (!validator.test(value)) {
+        return defaultValue;
+      }
+    } else if (typeof validator === "function") {
+      const result = validator(value);
+      if (result !== null && result !== undefined) {
+        return defaultValue;
+      }
+    }
+
+    return value;
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 const intTest = /^-?\d+$/;
 
 /**
