@@ -84,6 +84,7 @@ import {
   getThrow,
   getTrimmedThrow,
   getValidatedThrow,
+  getDefaultIfInvalid,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
@@ -232,6 +233,7 @@ import {
   getThrow,
   getTrimmedThrow,
   getValidatedThrow,
+  getDefaultIfInvalid,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
@@ -247,6 +249,7 @@ const {
   getThrow,
   getTrimmedThrow,
   getValidatedThrow,
+  getDefaultIfInvalid,
 
   getIntegerThrowInvalid, // equivalent to get
   getIntegerDefault,
