@@ -1,5 +1,5 @@
 ---
-name: preprocessor
+name: envprocessor
 description: >
   Use when working with envprocessor - exposing environment variables to the frontend.
   Trigger when user mentions env vars, preprocessed.js, EXPOSE_EXTRA_ENV_VARIABLES,
