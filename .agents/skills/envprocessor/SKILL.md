@@ -4,6 +4,11 @@ description: >
   Use when working with envprocessor - exposing environment variables to the frontend.
   Trigger when user mentions env vars, preprocessed.js, EXPOSE_EXTRA_ENV_VARIABLES,
   or needs to access environment variables in browser code.
+license: GPL-2.0-only
+metadata:
+  author: stopsopa
+  version: "1.1"
+  website: https://github.com/stopsopa/envprocessor
 ---
 
 # envprocessor - expose env vars to frontend
