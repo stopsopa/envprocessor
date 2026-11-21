@@ -1,22 +1,46 @@
-// https://stopsopa.github.io/viewer.html?file=%2Fpages%2Fbash%2Fxx%2Fxx-example.cjs
-// edit: https://github.com/stopsopa/stopsopa.github.io/blob/master/pages/bash/xx/xx-example.cjs
+// generated from template: https://stopsopa.github.io/xx/templates/xx.ts
+// github edit  : https://github.com/stopsopa/xx/edit/main/templates/xx.ts
 
-// https://stopsopa.github.io/viewer.html?file=xx.cjs
-// edit: https://github.com/stopsopa/stopsopa.github.io/blob/master/xx.cjs
 // 🚀 -
 // ✅ -
 // ⚙️  -
 // 🗑️  -
 // 🛑 -
+// to call other xx commands from inside any xx command use:
+//    shopt -s expand_aliases && source ~/.bashrc
+// after that just do:
+//   xx <command_name>
 
-const S="\\\\"
+type Command = {
+  // shell script, written to xx_generated.sh and executed with /bin/bash
+  command: string;
+  // shown under the menu for selected row. Default: name of the command
+  description?: string;
+  // default true: ask "Run command?" before running
+  confirm?: boolean;
+  // default false. true = run in the current shell (source) instead of /bin/bash
+  source?: boolean;
+  // lower goes first. Missing means 0, so negative = top, positive = bottom
+  order?: number;
+};
 
-module.exports = (setup) => {
+type Commands = Record<string, Command>;
+
+type Ctx = {
+  // arguments given after the name of the command: xx <name> [args]
+  args: string[];
+  // directory xx was called in
+  cwd: string;
+  // path of this file
+  configPath: string;
+};
+
+export default (setup: Commands, ctx: Ctx): Commands => {
   return {
     help: {
       command: `
 source .env
-        
+
 cat <<EEE
 
   🐙 GitHub: $(git ls-remote --get-url origin | awk '{\$1=\$1};1' | tr -d '\\n' | sed -E 's/git@github\\.com:([^/]+)\\/(.+)\\.git/https:\\/\\/github.com\\/\\1\\/\\2/g')
@@ -43,7 +67,7 @@ EEE
 read -p "\n      Press enter to continue\n"
 npm run build
 `,
-      description: `tsc`,
+      description: `npm run build`,
       confirm: false,
     },
     [`tsc`]: {
@@ -52,12 +76,12 @@ set -e
 cat <<EEE
 
 node node_modules/.bin/tsc -p tsconfig.json --noEmit --watch
-node node_modules/.bin/tsc -p tsconfig.json --noEmit 
+node node_modules/.bin/tsc -p tsconfig.json --noEmit
 
 EEE
 node node_modules/.bin/tsc -p tsconfig.json --noEmit --watch
 `,
-      description: `tsc`,
+      description: `tsc --watch`,
       confirm: false,
     },
     [`test`]: {
@@ -69,7 +93,7 @@ node node_modules/.bin/vitest --config vitest.config.ts --coverage run
 
 EEE
 `,
-      description: `coverage server`,
+      description: `print command to run tests`,
       confirm: false,
     },
     [`coverage`]: {
@@ -86,15 +110,15 @@ open "file://$(realpath "coverage/index.html")"
     },
     [`test server`]: {
       command: `
-shopt -s expand_aliases && source ~/.bashrc      
+shopt -s expand_aliases && source ~/.bashrc
 COMMANDS="$(cat <<-EOF
 
 xx build
-TEST_ONE="one" TEST_TWO="two" node dist/cjs/cli.cjs --mask '^TEST_' examples/preprocessed.js --debug    
+TEST_ONE="one" TEST_TWO="two" node dist/cjs/cli.cjs --mask '^TEST_' examples/preprocessed.js --debug
 HOST="0.0.0.0" PORT="8433" node server.js
 
 EOF
-)"   
+)"
 echo "\$COMMANDS"
 
 read -p "\n      Press enter to continue\n"
@@ -119,7 +143,7 @@ read -p "\n      Press enter to continue\n"
 /bin/bash bash/swap-files-v2.sh package.json package.dev.json package-lock.json package-lock.dev.json -- npm install
 
 `,
-      description: `test server`,
+      description: `npm install (with package.dev.json swapped in)`,
       confirm: false,
     },
     [`npm pack`]: {
@@ -130,28 +154,28 @@ npm pack
       description: `npm pack`,
       confirm: false,
     },
-    [`style list`]: {
+    [`style:check`]: {
       command: `
 set -e
-/bin/bash bash/swap-files-v2.sh package.json package.dev.json -- yarn style:list	
+NODE_OPTIONS="" node node_modules/.bin/prettier --config prettier.config.cjs --check .
 `,
-      description: `style list`,
+      description: `prettier --check`,
       confirm: false,
     },
-    [`style check`]: {
+    [`style:fix`]: {
       command: `
 set -e
-/bin/bash bash/swap-files-v2.sh package.json package.dev.json -- yarn style:check	
+NODE_OPTIONS="" node node_modules/.bin/prettier --config prettier.config.cjs --write .
 `,
-      description: `style check`,
+      description: `prettier --write`,
       confirm: false,
     },
-    [`style fix`]: {
+    [`style:list`]: {
       command: `
 set -e
-/bin/bash bash/swap-files-v2.sh package.json package.dev.json -- yarn style:fix	
+NODE_OPTIONS="" node node_modules/.bin/prettier --config prettier.config.cjs --list-different .
 `,
-      description: `style fix`,
+      description: `prettier --list-different`,
       confirm: false,
     },
     ...setup,

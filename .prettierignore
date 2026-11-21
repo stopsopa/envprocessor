@@ -1,4 +1,8 @@
 /package.json
+/package-lock.json
+/package-lock.dev.json
 /coverage/
+/dist/
 /var/
-
+/node_modules/
+examples/preprocessed.js

@@ -11,7 +11,7 @@ tsconfig.*
 vitest.config.ts
 prettier*
 package.dev.json
-xx.cjs
+xx.*
 release.config.js
 commitlint.config.js
 /.idea/

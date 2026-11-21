@@ -154,5 +154,3 @@ it("getDefaultIfInvalid", async () => {
   expect(getDefaultIfInvalid("ABC", "fallback", () => undefined)).toEqual("123");
   expect(getDefaultIfInvalid("ABC", "fallback", () => true)).toEqual("fallback");
 });
-
-

@@ -6,9 +6,9 @@
   "main": "src",
   "scripts": {
     "test": "/bin/bash test.sh",
-    "style:check": "yarn prettier --config prettier.config.cjs --check .",
-    "style:fix": "yarn prettier --config prettier.config.cjs --write .",
-    "style:list": "yarn prettier --config prettier.config.cjs --list-different ."
+    "style:check": "prettier --config prettier.config.cjs --check .",
+    "style:fix": "prettier --config prettier.config.cjs --write .",
+    "style:list": "prettier --config prettier.config.cjs --list-different ."
   },
   "license": "MIT",
   "homepage": "https://github.com/stopsopa/envprocessor",
